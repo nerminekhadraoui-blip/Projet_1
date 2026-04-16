@@ -119,9 +119,7 @@ function bindEvents() {
 }
 
 async function loadManifest() {
-  const response = await fetch("./public/dashboards/manifest.json", {
-    cache: "no-store",
-  });
+  const response = await fetch("./dashboards/manifest.json", { cache: "no-store" });
 
   if (!response.ok) {
     throw new Error(`Impossible de charger le manifest (${response.status})`);
