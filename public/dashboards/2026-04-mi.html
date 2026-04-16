@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Opérationnel — Avril 2026 (01 → 15)</title>
+
+  <style>
+    :root{
+      --brand-dark:#2B4455; --brand-accent:#C68779; --brand-muted:#707E88; --white:#fff;
+      --bg:#f3f6f8; --bg-soft:#f8fafc; --line:#e2e8f0; --line-soft:#edf2f7;
+      --text:#1e293b; --text-soft:#475569;
+      --success:#16a34a; --danger:#dc2626; --info:#3b82f6; --warning:#eab308;
+      --shadow-sm:0 1px 3px rgba(15,23,42,.08);
+      --shadow-md:0 10px 30px rgba(43,68,85,.08);
+      --radius-md:10px; --radius-lg:14px; --radius-xl:18px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:system-ui,-apple-system,sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(198,135,121,.10), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(43,68,85,.08), transparent 24%),
+        var(--bg);
+      color:var(--text);
+      font-size:13px; line-height:1.45;
+    }
+    header{
+      background:linear-gradient(135deg,var(--brand-dark) 0%, #37576b 60%, var(--brand-accent) 100%);
+      color:var(--white); padding:24px 32px;
+      box-shadow:0 12px 24px rgba(43,68,85,.16);
+    }
+    header h1{font-size:22px;font-weight:700;letter-spacing:-.01em}
+    header .sub{font-size:12px;opacity:.82;margin-top:6px}
+
+    nav{
+      display:flex; background:rgba(255,255,255,.95);
+      border-bottom:1px solid var(--line);
+      padding:0 12px; overflow-x:auto;
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:blur(8px);
+    }
+    nav button{
+      padding:12px 16px; border:none; background:none;
+      font-size:12px; font-weight:600; color:var(--brand-muted);
+      cursor:pointer; border-bottom:3px solid transparent;
+      white-space:nowrap; transition:.18s ease;
+    }
+    nav button:hover{color:var(--brand-accent)}
+    nav button.active{color:var(--brand-dark); border-bottom-color:var(--brand-accent)}
+
+    .tab{display:none; padding:20px; max-width:1480px; margin:0 auto}
+    .tab.active{display:block}
+
+    .card{
+      background:rgba(255,255,255,.94);
+      border:1px solid rgba(226,232,240,.9);
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-sm);
+      padding:18px 20px; margin-bottom:18px;
+    }
+    .card h2{
+      font-size:15px; margin-bottom:10px; color:var(--brand-dark);
+      border-bottom:2px solid var(--line);
+      padding-bottom:7px;
+    }
+    .card h3{font-size:13px; margin:14px 0 8px; color:var(--text-soft)}
+
+    table{width:100%; border-collapse:collapse; font-size:11.5px; margin-bottom:6px}
+    thead th{
+      background:var(--bg-soft);
+      font-weight:600; text-align:right;
+      padding:7px 8px; border-bottom:2px solid var(--line);
+      color:var(--text-soft); white-space:nowrap;
+    }
+    thead th:first-child{text-align:left}
+    td{
+      padding:6px 8px; border-bottom:1px solid var(--line-soft);
+      text-align:right; white-space:nowrap;
+    }
+    td:first-child{text-align:left; font-weight:500}
+    tbody tr:hover{background:#fafcff}
+
+    tr.dim td{color:#b0b8c4 !important; font-weight:400 !important}
+    .up{color:var(--success)}
+    .dn{color:var(--danger)}
+    tr.dim .up, tr.dim .dn{color:#b0b8c4 !important}
+
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+    .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px}
+    @media (max-width:1100px){.grid3{grid-template-columns:1fr 1fr}}
+    @media (max-width:800px){.grid2,.grid3{grid-template-columns:1fr}}
+
+    .kpi-row{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px}
+    .kpi{
+      flex:1; min-width:130px;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(226,232,240,.9);
+      border-radius:var(--radius-md);
+      padding:14px; box-shadow:var(--shadow-sm);
+      text-align:center;
+    }
+    .kpi .v{font-size:22px; font-weight:700; color:var(--brand-dark)}
+    .kpi .l{font-size:10px; color:var(--brand-muted); margin-top:3px; text-transform:uppercase; letter-spacing:.04em}
+    .kpi .d{font-size:11px; margin-top:2px}
+
+    details{margin-bottom:4px}
+    summary{cursor:pointer; font-weight:600; color:var(--brand-dark); padding:5px 0; font-size:12px}
+    summary:hover{color:var(--brand-accent); text-decoration:underline}
+
+    .comment{
+      background:#eff6ff; border-left:4px solid var(--info);
+      border-radius:0 8px 8px 0;
+      padding:10px 14px; margin:10px 0;
+      font-size:11.5px; line-height:1.55; color:#1e40af;
+    }
+    .comment strong{color:var(--brand-dark)}
+    .alert{
+      background:#fef2f2; border-left:4px solid #ef4444;
+      border-radius:0 8px 8px 0;
+      padding:10px 14px; margin:10px 0;
+      font-size:11.5px; line-height:1.55; color:#991b1b;
+    }
+    .success{
+      background:#f0fdf4; border-left:4px solid #22c55e;
+      border-radius:0 8px 8px 0;
+      padding:10px 14px; margin:10px 0;
+      font-size:11.5px; line-height:1.55; color:#166534;
+    }
+
+    /* Blocs Copil (format “analyse Mars”) */
+    .copil-synth{
+      background:#fefce8;
+      border-left:4px solid var(--warning);
+      border-radius:0 10px 10px 0;
+      padding:12px 16px;
+      margin:12px 0;
+      color:#854d0e;
+    }
+    .copil-synth .title{
+      font-size:13px;
+      font-weight:800;
+      color:#7c4a07;
+      margin-bottom:6px;
+    }
+    .copil-synth p{margin:6px 0}
+    .copil-synth ul{margin:6px 0 0 18px}
+    .copil-synth li{margin-bottom:5px}
+    .copil-actions{
+      background:#fff;
+      border:1px solid rgba(226,232,240,.9);
+      border-radius:var(--radius-md);
+      padding:12px 14px;
+      margin-top:12px;
+    }
+    .copil-actions .title{font-weight:800; color:var(--brand-dark); margin-bottom:6px}
+    .copil-actions ul{margin-left:18px}
+    .copil-actions li{margin-bottom:6px; color:var(--text-soft)}
+    .pill{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.02em;
+      vertical-align:middle;
+      margin-right:6px;
+    }
+    .pill-r{background:#fee2e2; color:#991b1b}
+    .pill-y{background:#fef9c3; color:#854d0e}
+    .pill-g{background:#dcfce7; color:#166534}
+
+    .discussion-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+    .discussion-list{margin:8px 0 0 18px}
+    .discussion-list li{margin-bottom:6px}
+    .discussion-subtitle{font-size:13px; font-weight:700; color:var(--brand-dark); margin-bottom:10px}
+    .discussion-kicker{
+      display:inline-block; margin-bottom:8px;
+      padding:4px 10px; border-radius:999px;
+      background:rgba(43,68,85,.08); color:var(--brand-dark);
+      font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+    }
+    .simple-table td,.simple-table th{white-space:normal}
+    .action-table td:first-child,.action-table th:first-child{white-space:nowrap}
+    @media (max-width:900px){.discussion-grid{grid-template-columns:1fr}}
+
+    ::-webkit-scrollbar{width:10px; height:10px}
+    ::-webkit-scrollbar-thumb{background:rgba(112,126,136,.35); border-radius:999px}
+    ::-webkit-scrollbar-track{background:transparent}
+
+    @media (max-width:640px){
+      header{padding:18px}
+      header h1{font-size:18px}
+      .tab{padding:12px}
+      .card{padding:14px}
+      nav button{padding:11px 12px}
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>📊 Dashboard Opérationnel — Avril 2026 (01 → 15)</h1>
+    <div class="sub">Prospect · Client · Vigie · Recouvrement · Tickets — Lignes grisées = volumes non significatifs</div>
+  </header>
+
+  <nav>
+    <button class="active" data-t="copil">🎯 Copil</button>
+    <button data-t="overview">Vue d'ensemble</button>
+    <button data-t="prospect">Prospect</button>
+    <button data-t="client">Client</button>
+    <button data-t="vigie">Vigie</button>
+    <button data-t="recouv">Recouvrement</button>
+    <button data-t="tickets">Tickets</button>
+    <button data-t="discussion">Discussion</button>
+  </nav>
+
+  <!-- ========== COPIL (SYNTHÈSE “COMME MARS”) ========== -->
+  <section id="copil" class="tab active">
+    <div class="card">
+      <h2>🎯 Synthèse / Analyse — Avril 2026 (01 → 15)</h2>
+
+      <div class="copil-synth">
+        <div class="title">1. Prospect — Recul global, hétérogénéité forte (priorité France & Espagne)</div>
+        <p>📉 <strong>Volume -14,0%</strong> (455), QS <strong>92%</strong> (quasi stable), <strong>MER -16,8%</strong> (89), efficacité <strong>21%</strong> (<strong>-3,2 pts</strong>) → le canal perd de la traction à mi-mois.</p>
+        <ul>
+          <li>🇫🇷 <strong>France</strong> : volume <strong>-6,7%</strong>, MER <strong>-16,0%</strong>, efficacité <strong>21,2%</strong> (<strong>-9,6 pts</strong>) → on traite, mais on convertit moins. Lecture : problème “file(s)” + distribution / coaching conversion.</li>
+          <li>🇮🇹 <strong>Italie</strong> : volume <strong>-14,9%</strong> mais MER <strong>+14,3%</strong>, efficacité <strong>18,5%</strong> (<strong>+34,5</strong>) → rendement en hausse malgré moins d’entrants (opportunité : réalimenter le volume utile).</li>
+          <li>🇪🇸 <strong>Espagne</strong> : volume <strong>-16,2%</strong>, MER <strong>-30,4%</strong>, efficacité <strong>30,2%</strong> (<strong>-10,7</strong>) → bon niveau absolu, mais décrochage (QS et conversion à stabiliser).</li>
+          <li>🇵🇹 Portugal / 🌎 Latino / 🇹🇷 Turquie : volumes faibles → prudence d’interprétation, mais tendance globale défavorable.</li>
+        </ul>
+      </div>
+
+      <div class="copil-synth">
+        <div class="title">2. Client — Croissance solide, Italie & Turquie tirent le volume, Portugal à surveiller</div>
+        <p>📈 <strong>Volume +5,8%</strong> (4 467), QS <strong>98%</strong> (excellent), <strong>MER +4,2%</strong> (2 682), efficacité <strong>61%</strong> (<strong>-1,4 pt</strong>) → croissance “saine” mais rendement en léger retrait.</p>
+        <ul>
+          <li>🇮🇹 <strong>Italie</strong> : volume <strong>+42,5%</strong> & MER <strong>+48,1%</strong> → gros driver. Vigilance : capacité / couverture pour éviter baisse QS.</li>
+          <li>🇹🇷 <strong>Turquie</strong> : volume <strong>+48,6%</strong> mais efficacité <strong>-5,3</strong> → croissance rapide avec dilution qualitative.</li>
+          <li>🇵🇹 <strong>Portugal</strong> : pilier stable en volume (+3,1%) mais efficacité <strong>-3,2</strong> → quick wins à activer (motifs / script / ciblage).</li>
+          <li>🇫🇷 <strong>France</strong> : volume <strong>-9,6%</strong> mais efficacité <strong>+8,2</strong> → moins d’appels, meilleure conversion (tendance à consolider).</li>
+          <li>🌎 <strong>Latino</strong> : volume +8% mais efficacité <strong>-7,9</strong> → croissance moins qualitative.</li>
+        </ul>
+      </div>
+
+      <div class="copil-synth">
+        <div class="title">3. Vigie / Hors-Cibles — QS en hausse, mais bruit encore majoritaire</div>
+        <p>🧭 Volume <strong>-9,4%</strong> (1 139), traités <strong>-4,0%</strong> (483), QS <strong>42%</strong> (<strong>+6 pts</strong>), MER <strong>+15,8%</strong> (44), efficacité <strong>9%</strong> (<strong>+20,6</strong>) → amélioration nette de productivité.</p>
+        <ul>
+          <li>🧱 N2 : <strong>Hors-Cibles 62%</strong> (300) → niveau encore trop élevé (gisement d’optimisation amont).</li>
+          <li>📵 N3 : <strong>Répondeur 44%</strong> (214) ; <strong>MER/RDV ko 28%</strong> (137) ; <strong>Pas de réponse 15%</strong> (72) en hausse → signal d’accessibilité / timing / confirmation.</li>
+          <li>🇵🇹 Portugal : très bon “recyclage” (efficacité 27,4%).</li>
+          <li>🇫🇷 France : QS forte (74,1%) mais efficacité faible (4,4%) → décroché ≠ conversion (qualification / cible à revoir).</li>
+        </ul>
+      </div>
+
+      <div class="copil-synth">
+        <div class="title">4. Recouvrement — Appels quasi non-contributifs, clics très qualitatifs mais volume en baisse</div>
+        <p>💰 <strong>Appels</strong> : 4 323 (-8,1%), QS 32%, <strong>2 MER</strong> → canal faible à ce stade.</p>
+        <p>🖱️ <strong>Clics</strong> : 810 (-21,5%), <strong>%OK 60,1%</strong> (<strong>+17,5 pts</strong>), <strong>16 729€</strong> (-6,2%) → qualité en forte hausse, enjeu = remonter le volume.</p>
+        <ul>
+          <li>🇮🇹 Italie : <strong>91% OK</strong> + 4 691€ (+20,6%) → mécanique à répliquer.</li>
+          <li>🇫🇷 France : tentatives -40,1% mais 4 931€ (+83%) → ciblage très rentable ; priorité = remettre du volume sans dégrader le %OK.</li>
+          <li>🌎 Latino : 1 177€ (-91,6%) → chute de valeur (ciblage / recouvrabilité à revoir).</li>
+        </ul>
+      </div>
+
+      <div class="copil-synth">
+        <div class="title">5. Tickets — Débit élevé, mais délai moyen trop long</div>
+        <p>🎫 <strong>443 créés</strong> / <strong>938 traités</strong> → bon débit (traités &gt; créés), mais ⏱ <strong>56,2h</strong> de temps moyen → nécessité de prioriser et réduire le TTR rapidement.</p>
+      </div>
+
+      <div class="copil-actions">
+        <div class="title">Décisions / Actions S3 (proposées)</div>
+        <ul>
+          <li><span class="pill pill-r">URGENT</span><strong>Prospect France</strong> : identifier la/les file(s) qui tirent l’efficacité vers le bas (volume × chute MER) puis corriger (script, qualification, routage, distribution).</li>
+          <li><span class="pill pill-y">IMPORTANT</span><strong>Client Italie</strong> : sécuriser capacité (planning/couverture/back-up) pour absorber la croissance sans dégrader QS/efficacité.</li>
+          <li><span class="pill pill-y">IMPORTANT</span><strong>Recouv appels</strong> : arbitrage (ciblage/plages/listes) car conversion quasi nulle (2 MER).</li>
+          <li><span class="pill pill-y">IMPORTANT</span><strong>Recouv clics</strong> : plan “volume” en gardant <strong>%OK ≥ 60%</strong> (priorité IT/FR/PT), et revue Latino.</li>
+          <li><span class="pill pill-g">SUIVI</span><strong>Tickets</strong> : routine de tri + règles de priorisation (SLA) + fast-lane catégories bloquantes pour baisser le TTR.</li>
+        </ul>
+      </div>
+
+      <div class="comment">
+        <strong>Note :</strong> si tu veux un rendu “strictement identique Mars” (mêmes libellés, mêmes phrases-type, mêmes indicateurs mis en avant),
+        colle-moi la synthèse Mars exacte (ou une capture) et je te fais un copier-coller structurel avec les chiffres d’avril.
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OVERVIEW ========== -->
+  <section id="overview" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">455</div><div class="l">Prospect</div><div class="d dn">-14,0%</div></div>
+      <div class="kpi"><div class="v">4 467</div><div class="l">Client</div><div class="d up">+5,8%</div></div>
+      <div class="kpi"><div class="v">1 139</div><div class="l">Vigie</div><div class="d dn">-9,4%</div></div>
+      <div class="kpi"><div class="v">4 323</div><div class="l">Recouv (appels)</div><div class="d dn">-8,1%</div></div>
+      <div class="kpi"><div class="v">16 729€</div><div class="l">€ Recouvrés (clics)</div><div class="d dn">-6,2%</div></div>
+      <div class="kpi"><div class="v">443</div><div class="l">Tickets créés</div><div class="d">01→15</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Cockpits globaux par flux</h2>
+      <table>
+        <thead><tr><th>Flux</th><th>#</th><th>%Δ</th><th>Traités</th><th>%Δ</th><th>QS</th><th>%Δ</th><th>MER/RDV</th><th>%Δ</th><th>Eff.</th><th>%Δ</th></tr></thead>
+        <tbody>
+          <tr><td>Prospect</td><td>455</td><td class="dn">-14,0%</td><td>420</td><td class="dn">-14,1%</td><td>92%</td><td class="dn">-0,1%</td><td>89</td><td class="dn">-16,8%</td><td>21%</td><td class="dn">-3,2%</td></tr>
+          <tr><td>Client</td><td>4 467</td><td class="up">+5,8%</td><td>4 391</td><td class="up">+5,7%</td><td>98%</td><td>0,0%</td><td>2 682</td><td class="up">+4,2%</td><td>61%</td><td class="dn">-1,4%</td></tr>
+          <tr><td>Vigie</td><td>1 139</td><td class="dn">-9,4%</td><td>483</td><td class="dn">-4,0%</td><td>42%</td><td class="up">+6,0%</td><td>44</td><td class="up">+15,8%</td><td>9%</td><td class="up">+20,6%</td></tr>
+          <tr><td>Recouvrement (appels)</td><td>4 323</td><td class="dn">-8,1%</td><td>1 363</td><td class="dn">-8,7%</td><td>32%</td><td class="dn">-0,7%</td><td>2</td><td class="dn">-50,0%</td><td>0%</td><td class="dn">-45,2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Prospect — par pays</h2>
+        <table>
+          <thead><tr><th>Pays</th><th>#</th><th>%Δ</th><th>Traités</th><th>%Δ</th><th>QS</th><th>%Δ</th><th>MER/RDV</th><th>%Δ</th><th>Efficacité</th><th>%Δ</th></tr></thead>
+          <tbody>
+            <tr><td>France</td><td>208</td><td class="dn">-6,7%</td><td>198</td><td class="dn">-7,0%</td><td>95,2%</td><td class="dn">-0,3%</td><td>42</td><td class="dn">-16,0%</td><td>21,2%</td><td class="dn">-9,6%</td></tr>
+            <tr><td>Italie</td><td>143</td><td class="dn">-14,9%</td><td>130</td><td class="dn">-15,0%</td><td>90,9%</td><td class="dn">-0,2%</td><td>24</td><td class="up">+14,3%</td><td>18,5%</td><td class="up">+34,5%</td></tr>
+            <tr><td>Espagne</td><td>62</td><td class="dn">-16,2%</td><td>53</td><td class="dn">-22,1%</td><td>85,5%</td><td class="dn">-7,0%</td><td>16</td><td class="dn">-30,4%</td><td>30,2%</td><td class="dn">-10,7%</td></tr>
+            <tr><td>Portugal</td><td>25</td><td class="dn">-41,9%</td><td>23</td><td class="dn">-37,8%</td><td>92,0%</td><td class="up">+6,9%</td><td>6</td><td class="dn">-50,0%</td><td>26,1%</td><td class="dn">-19,6%</td></tr>
+            <tr class="dim"><td>Latino</td><td>9</td><td class="dn">-52,6%</td><td>9</td><td class="dn">-43,8%</td><td>100,0%</td><td class="up">+18,8%</td><td>0</td><td class="dn">-100,0%</td><td>0,0%</td><td class="dn">-100,0%</td></tr>
+            <tr class="dim"><td>Turquie</td><td>7</td><td>—</td><td>6</td><td>—</td><td>85,7%</td><td>—</td><td>0</td><td>—</td><td>0,0%</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Client — par pays</h2>
+        <table>
+          <thead><tr><th>Pays</th><th>#</th><th>%Δ</th><th>Traités</th><th>%Δ</th><th>QS</th><th>%Δ</th><th>MER/RDV</th><th>%Δ</th><th>Efficacité</th><th>%Δ</th></tr></thead>
+          <tbody>
+            <tr><td>Portugal</td><td>2 734</td><td class="up">+3,1%</td><td>2 705</td><td class="up">+3,2%</td><td>98,9%</td><td class="up">+0,1%</td><td>1 729</td><td class="dn">-0,1%</td><td>63,9%</td><td class="dn">-3,2%</td></tr>
+            <tr><td>France</td><td>557</td><td class="dn">-9,6%</td><td>548</td><td class="dn">-8,8%</td><td>98,4%</td><td class="up">+0,8%</td><td>301</td><td class="dn">-1,3%</td><td>54,9%</td><td class="up">+8,2%</td></tr>
+            <tr><td>Espagne</td><td>402</td><td class="up">+5,2%</td><td>386</td><td class="up">+2,9%</td><td>96,0%</td><td class="dn">-2,2%</td><td>227</td><td class="up">+8,1%</td><td>58,8%</td><td class="up">+5,0%</td></tr>
+            <tr><td>Italie</td><td>382</td><td class="up">+42,5%</td><td>377</td><td class="up">+42,8%</td><td>98,7%</td><td class="up">+0,2%</td><td>194</td><td class="up">+48,1%</td><td>51,5%</td><td class="up">+3,7%</td></tr>
+            <tr><td>Turquie</td><td>211</td><td class="up">+48,6%</td><td>198</td><td class="up">+48,9%</td><td>93,8%</td><td class="up">+0,2%</td><td>117</td><td class="up">+41,0%</td><td>59,1%</td><td class="dn">-5,3%</td></tr>
+            <tr><td>Latino</td><td>176</td><td class="up">+8,0%</td><td>172</td><td class="up">+9,6%</td><td>97,7%</td><td class="up">+1,5%</td><td>112</td><td class="up">+0,9%</td><td>65,1%</td><td class="dn">-7,9%</td></tr>
+            <tr class="dim"><td>Autres</td><td>5</td><td>—</td><td>5</td><td>—</td><td>—</td><td>—</td><td>2</td><td>—</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROSPECT ========== -->
+  <section id="prospect" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">455</div><div class="l">Appels</div><div class="d dn">-14,0%</div></div>
+      <div class="kpi"><div class="v">420</div><div class="l">Traités</div><div class="d dn">-14,1%</div></div>
+      <div class="kpi"><div class="v">92%</div><div class="l">QS</div><div class="d dn">-0,1%</div></div>
+      <div class="kpi"><div class="v">89</div><div class="l">MER/RDV</div><div class="d dn">-16,8%</div></div>
+      <div class="kpi"><div class="v">21%</div><div class="l">Efficacité</div><div class="d dn">-3,2%</div></div>
+    </div>
+
+    <div class="alert">
+      <strong>Point d’attention :</strong> à mi-mois, la baisse de volume + MER impose une action rapide sur les “files” les plus contributives à la variation d’efficacité.
+    </div>
+
+    <div class="card">
+      <h2>France — Prospect</h2>
+      <details open>
+        <summary>Campagnes (Files)</summary>
+        <table>
+          <thead><tr><th>File</th><th>#</th><th>%Δ</th><th>Traités</th><th>%Δ</th><th>QS</th><th>%Δ</th><th>MER/RDV</th><th>%Δ</th><th>Efficacité</th><th>%Δ</th></tr></thead>
+          <tbody>
+            <tr><td>Prospect Newgora (Astro Fr)</td><td>92</td><td class="up">+33,3%</td><td>87</td><td class="up">+27,9%</td><td>94,6%</td><td class="dn">-4,0%</td><td>13</td><td>0,0%</td><td>15%</td><td class="dn">-21,8%</td></tr>
+            <tr><td>Prospect (autre Fr)</td><td>34</td><td class="dn">-34,6%</td><td>34</td><td class="dn">-31,8%</td><td>100,0%</td><td class="up">+6,1%</td><td>12</td><td>0,0%</td><td>35%</td><td class="up">+44,1%</td></tr>
+            <tr><td>Prospect Astrocenter TV (Astro Fr)</td><td>31</td><td class="dn">-34,0%</td><td>29</td><td class="dn">-32,6%</td><td>93,5%</td><td class="up">+2,3%</td><td>6</td><td class="dn">-57,1%</td><td>21%</td><td class="dn">-36,5%</td></tr>
+            <tr><td>Prospect Newgora (Psy Fr)</td><td>26</td><td class="dn">-10,3%</td><td>25</td><td class="dn">-10,7%</td><td>96,2%</td><td class="dn">-0,4%</td><td>6</td><td class="up">+100,0%</td><td>24%</td><td class="up">+124,0%</td></tr>
+            <tr><td>Prospect Média (Astro Fr)</td><td>16</td><td class="dn">-11,1%</td><td>15</td><td class="dn">-11,8%</td><td>93,8%</td><td class="dn">-0,7%</td><td>4</td><td class="dn">-20,0%</td><td>27%</td><td class="up">+9,3%</td></tr>
+            <tr class="dim"><td>Prospect Partenaires (Astro Fr)</td><td>5</td><td class="up">+25,0%</td><td>4</td><td>0,0%</td><td>80,0%</td><td class="dn">-20,0%</td><td>0</td><td class="dn">-100,0%</td><td>0%</td><td class="dn">-100,0%</td></tr>
+            <tr class="dim"><td>Prospect Slot TV (Astro Fr)</td><td>3</td><td class="dn">-25,0%</td><td>3</td><td class="dn">-25,0%</td><td>100,0%</td><td>0,0%</td><td>1</td><td class="dn">-50,0%</td><td>33%</td><td class="dn">-33,3%</td></tr>
+            <tr class="dim"><td>Prospect Organique (Astro Fr)</td><td>1</td><td>—</td><td>1</td><td>—</td><td>100,0%</td><td>—</td><td>0</td><td>—</td><td>0%</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
+  </section>
+
+  <!-- ========== CLIENT ========== -->
+  <section id="client" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">4 467</div><div class="l">Appels</div><div class="d up">+5,8%</div></div>
+      <div class="kpi"><div class="v">4 391</div><div class="l">Traités</div><div class="d up">+5,7%</div></div>
+      <div class="kpi"><div class="v">98%</div><div class="l">QS</div><div class="d">0,0%</div></div>
+      <div class="kpi"><div class="v">2 682</div><div class="l">MER/RDV</div><div class="d up">+4,2%</div></div>
+      <div class="kpi"><div class="v">61%</div><div class="l">Efficacité</div><div class="d dn">-1,4%</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Client — synthèse globale</h2>
+      <table>
+        <thead><tr><th></th><th>#</th><th>%Δ</th><th>Traités</th><th>%Δ</th><th>QS</th><th>%Δ</th><th>MER/RDV</th><th>%Δ</th><th>Efficacité</th><th>%Δ</th></tr></thead>
+        <tbody>
+          <tr><td>Global</td><td>4 467</td><td class="up">+5,8%</td><td>4 391</td><td class="up">+5,7%</td><td>98%</td><td>0,0%</td><td>2 682</td><td class="up">+4,2%</td><td>61%</td><td class="dn">-1,4%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== VIGIE ========== -->
+  <section id="vigie" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">1 139</div><div class="l">Appels</div><div class="d dn">-9,4%</div></div>
+      <div class="kpi"><div class="v">483</div><div class="l">Traités</div><div class="d dn">-4,0%</div></div>
+      <div class="kpi"><div class="v">42%</div><div class="l">QS</div><div class="d up">+6,0%</div></div>
+      <div class="kpi"><div class="v">44</div><div class="l">MER/RDV</div><div class="d up">+15,8%</div></div>
+      <div class="kpi"><div class="v">9%</div><div class="l">Efficacité</div><div class="d up">+20,6%</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Qualifications — Niveau 2</h2>
+        <table>
+          <thead><tr><th>Niveau 2</th><th>#</th><th>%Δ</th><th>%</th><th>%Δ</th></tr></thead>
+          <tbody>
+            <tr><td>Hors-Cibles</td><td>300</td><td class="dn">-1,6%</td><td>62%</td><td class="up">+2,4%</td></tr>
+            <tr><td>Client</td><td>178</td><td class="dn">-4,8%</td><td>37%</td><td class="dn">-0,9%</td></tr>
+            <tr class="dim"><td>Prospect</td><td>5</td><td class="dn">-28,6%</td><td>1%</td><td class="dn">-25,6%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Qualifications — Niveau 3</h2>
+        <table>
+          <thead><tr><th>Niveau 3</th><th>#</th><th>%Δ</th><th>%</th><th>%Δ</th></tr></thead>
+          <tbody>
+            <tr><td>Répondeur</td><td>214</td><td class="dn">-12,3%</td><td>44%</td><td class="dn">-8,7%</td></tr>
+            <tr><td>MER/RDV ko</td><td>137</td><td class="dn">-8,7%</td><td>28%</td><td class="dn">-4,9%</td></tr>
+            <tr><td>Pas de réponse</td><td>72</td><td class="up">+41,2%</td><td>15%</td><td class="up">+47,0%</td></tr>
+            <tr><td>MER/RDV ok</td><td>46</td><td class="up">+4,5%</td><td>10%</td><td class="up">+8,9%</td></tr>
+            <tr class="dim"><td>Anomalie technique</td><td>10</td><td>0,0%</td><td>2%</td><td class="up">+4,1%</td></tr>
+            <tr class="dim"><td>Faux numéro</td><td>4</td><td>—</td><td>1%</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== RECOUVREMENT ========== -->
+  <section id="recouv" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">4 323</div><div class="l">Appels</div><div class="d dn">-8,1%</div></div>
+      <div class="kpi"><div class="v">1 363</div><div class="l">Traités</div><div class="d dn">-8,7%</div></div>
+      <div class="kpi"><div class="v">32%</div><div class="l">QS</div><div class="d dn">-0,7%</div></div>
+      <div class="kpi"><div class="v">2</div><div class="l">MER/RDV</div><div class="d dn">-50,0%</div></div>
+      <div class="kpi"><div class="v">810</div><div class="l">Clics</div><div class="d dn">-21,5%</div></div>
+      <div class="kpi"><div class="v">60,1%</div><div class="l">%OK clics</div><div class="d up">+17,5%</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Efficacité des tentatives (clics)</h2>
+      <table>
+        <thead><tr><th>Global</th><th># Tentatives</th><th>%Δ</th><th># Tentatives OK</th><th>%Δ</th><th>%OK</th><th>%Δ</th><th>Montant recouvré</th><th>%Δ</th></tr></thead>
+        <tbody>
+          <tr><td>Total</td><td>810</td><td class="dn">-21,5%</td><td>487</td><td class="dn">-7,8%</td><td>60,1%</td><td class="up">+17,5%</td><td>16 729 €</td><td class="dn">-6,2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== TICKETS ========== -->
+  <section id="tickets" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">443</div><div class="l">Tickets créés</div></div>
+      <div class="kpi"><div class="v">938</div><div class="l">Tickets traités</div></div>
+      <div class="kpi"><div class="v">238</div><div class="l">Tickets résolus</div></div>
+      <div class="kpi"><div class="v">700</div><div class="l">Tickets fermés</div></div>
+      <div class="kpi"><div class="v">56,2h</div><div class="l">Temps moyen résolution</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Statuts</h2>
+      <table>
+        <thead><tr><th>Statut</th><th>#</th></tr></thead>
+        <tbody>
+          <tr><td>Fermé</td><td>700</td></tr>
+          <tr><td>Résolu</td><td>238</td></tr>
+          <tr class="dim"><td>En cours</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== DISCUSSION ========== -->
+  <section id="discussion" class="tab">
+    <div class="card">
+      <span class="discussion-kicker">Discussion</span>
+      <h2>💬 Guide de discussion Copil — Avril 2026 (01 → 15)</h2>
+      <div class="comment">
+        Revue mi-mois : focus sur la trajectoire, les décisions rapides à activer en 2e quinzaine, et la priorisation des actions à impact fin de mois.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>0. Objectifs de la séance & cadre</h2>
+      <div class="discussion-grid">
+        <div>
+          <div class="discussion-subtitle">Objectifs mi-mois</div>
+          <ul class="discussion-list">
+            <li>Confirmer la trajectoire à date et les risques fin de mois.</li>
+            <li>Décider des ajustements rapides (routage, planning, scripts, priorisation).</li>
+            <li>Valider 3–5 actions “impact S3/S4” + KPI associés.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="discussion-subtitle">Périmètre analysé</div>
+          <ul class="discussion-list">
+            <li>Flux entrants : Prospect, Client</li>
+            <li>Qualité / tri : Vigie</li>
+            <li>Flux sortants : Recouvrement (appels + clics)</li>
+            <li>Support : Tickets</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = "dashboard-2026-04-01-15:tab";
+      const buttons = Array.from(document.querySelectorAll("nav button[data-t]"));
+      const tabs = Array.from(document.querySelectorAll(".tab"));
+
+      function activateTab(tabId) {
+        buttons.forEach((b) => b.classList.toggle("active", b.dataset.t === tabId));
+        tabs.forEach((t) => t.classList.toggle("active", t.id === tabId));
+        localStorage.setItem(STORAGE_KEY, tabId);
+      }
+
+      buttons.forEach((b) => b.addEventListener("click", () => activateTab(b.dataset.t)));
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const ok = saved && tabs.some((t) => t.id === saved);
+      activateTab(ok ? saved : "copil");
+    })();
+  </script>
+</body>
+</html>
