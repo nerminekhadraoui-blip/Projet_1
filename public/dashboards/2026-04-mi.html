@@ -171,7 +171,9 @@
     .pill-y{background:#fef9c3; color:#854d0e}
     .pill-g{background:#dcfce7; color:#166534}
 
+    /* Discussion */
     .discussion-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+    .discussion-grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px}
     .discussion-list{margin:8px 0 0 18px}
     .discussion-list li{margin-bottom:6px}
     .discussion-subtitle{font-size:13px; font-weight:700; color:var(--brand-dark); margin-bottom:10px}
@@ -181,9 +183,10 @@
       background:rgba(43,68,85,.08); color:var(--brand-dark);
       font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
     }
+    .note{font-size:10.5px; color:#94a3b8; font-style:italic; margin:4px 0 8px}
     .simple-table td,.simple-table th{white-space:normal}
     .action-table td:first-child,.action-table th:first-child{white-space:nowrap}
-    @media (max-width:900px){.discussion-grid{grid-template-columns:1fr}}
+    @media (max-width:900px){.discussion-grid, .discussion-grid-3{grid-template-columns:1fr}}
 
     ::-webkit-scrollbar{width:10px; height:10px}
     ::-webkit-scrollbar-thumb{background:rgba(112,126,136,.35); border-radius:999px}
@@ -488,7 +491,7 @@
     </div>
   </section>
 
-  <!-- ========== DISCUSSION ========== -->
+  <!-- ========== DISCUSSION (COMPLÈTE) ========== -->
   <section id="discussion" class="tab">
     <div class="card">
       <span class="discussion-kicker">Discussion</span>
@@ -519,6 +522,141 @@
           </ul>
         </div>
       </div>
+    </div>
+
+    <div class="card">
+      <h2>1. Trajectoire KPI — Lecture & arbitrages (mi-mois)</h2>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>1.1 Prospect (entrant)</h3>
+          <table class="simple-table">
+            <thead><tr><th>Question</th><th>Données (01→15)</th><th>Lecture</th></tr></thead>
+            <tbody>
+              <tr><td>Volume / QS</td><td>455 reçus · 420 traités · QS 92%</td><td>QS stable, volume en baisse</td></tr>
+              <tr><td>Conversion</td><td>89 MER/RDV · efficacité 21%</td><td>⚠ recul (MER -16,8%)</td></tr>
+              <tr><td>Où agir ?</td><td>France eff. -9,6 pts · Espagne eff. -10,7</td><td>Prioriser FR/ES (files + qualité)</td></tr>
+            </tbody>
+          </table>
+
+          <div class="alert">
+            <strong>Décisions attendues :</strong>
+            <ul class="discussion-list">
+              <li>Identifier la/les <strong>files FR</strong> responsables (volume × chute MER) et corriger (script/qualif/routage).</li>
+              <li>Espagne : sécuriser QS et stabiliser conversion (focus Best12 QS).</li>
+              <li>Italie : chercher du volume utile sans perdre la perf.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>1.2 Client (entrant)</h3>
+          <table class="simple-table">
+            <thead><tr><th>Question</th><th>Données (01→15)</th><th>Lecture</th></tr></thead>
+            <tbody>
+              <tr><td>Volume / QS</td><td>4 467 reçus · 4 391 traités · QS 98%</td><td>Très bonne maîtrise du flux</td></tr>
+              <tr><td>Conversion</td><td>2 682 MER/RDV · efficacité 61%</td><td>⚠ légère baisse (-1,4 pt)</td></tr>
+              <tr><td>Risque</td><td>Italie +42,5% vol · Turquie +48,6%</td><td>Capacité + dilution rendement</td></tr>
+            </tbody>
+          </table>
+
+          <div class="comment">
+            <strong>Décisions attendues :</strong>
+            <ul class="discussion-list">
+              <li>Plan capacité <strong>Italie</strong> (couverture/back-up) pour éviter baisse QS.</li>
+              <li>Plan qualité <strong>Turquie</strong> (eff -5,3) : script/motifs/triage.</li>
+              <li>Portugal : corriger l’érosion d’efficacité (-3,2) par quick wins (motifs/segment/temps).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:16px">
+        <div class="card">
+          <h3>1.3 Vigie (qualif / tri)</h3>
+          <table class="simple-table">
+            <thead><tr><th>Question</th><th>Données (01→15)</th><th>Lecture</th></tr></thead>
+            <tbody>
+              <tr><td>QS</td><td>42% (+6 pts)</td><td>Amélioration nette</td></tr>
+              <tr><td>Bruit</td><td>Hors-Cibles 62% (300)</td><td>⚠ trop élevé, gisement amont</td></tr>
+              <tr><td>Fuites N3</td><td>Répondeur 44% · MER/RDV ko 28% · Pas de réponse 15%</td><td>Priorité : réduire MER/RDV ko</td></tr>
+            </tbody>
+          </table>
+
+          <div class="comment">
+            <strong>Décisions attendues :</strong>
+            <ul class="discussion-list">
+              <li>Réduire “Hors-Cibles” via règles de dispatch / filtres amont.</li>
+              <li>Réduire “MER/RDV ko” via confirmation & wording + discipline de qualif.</li>
+              <li>Tester plages horaires pour “Pas de réponse” (timing rappel).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>1.4 Recouvrement (sortant)</h3>
+          <table class="simple-table">
+            <thead><tr><th>Question</th><th>Données (01→15)</th><th>Lecture</th></tr></thead>
+            <tbody>
+              <tr><td>Appels</td><td>4 323 · QS 32% · 2 MER</td><td>⚠ canal faible / à arbitrer</td></tr>
+              <tr><td>Clics</td><td>810 · %OK 60,1% (+17,5)</td><td>✅ qualité forte</td></tr>
+              <tr><td>€</td><td>16 729€ (-6,2)</td><td>Remonter via volume (sans dégrader %OK)</td></tr>
+            </tbody>
+          </table>
+
+          <div class="alert">
+            <strong>Décisions attendues :</strong>
+            <ul class="discussion-list">
+              <li>Arbitrer le canal appels (ciblage/plages/listes) vs effort.</li>
+              <li>Plan d’augmentation des clics sur pays rentables (IT/FR/PT) avec garde-fou %OK ≥ 60%.</li>
+              <li>Latino : diagnostic “valeur” (ciblage/recouvrabilité).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. Suivi des actions précédentes — statut</h2>
+      <div class="note">À compléter pendant la séance.</div>
+      <table class="action-table simple-table">
+        <thead><tr><th>#</th><th>Action</th><th>Responsable</th><th>Statut</th><th>Impact à mi-mois</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>2</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>3</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>3. Plan d’actions — 2e quinzaine (S3/S4)</h2>
+      <table class="action-table simple-table">
+        <thead><tr><th>Prio</th><th>Action</th><th>Responsable</th><th>Échéance</th><th>KPI</th></tr></thead>
+        <tbody>
+          <tr><td>🔴</td><td>Prospect FR : corriger file(s) contributive(s) (script/qualif/routage + distribution)</td><td>—</td><td>S3</td><td>Eff. FR / MER FR</td></tr>
+          <tr><td>🔴</td><td>Client IT : sécuriser capacité (couverture + back-up) et suivre QS/efficacité</td><td>—</td><td>S3</td><td>QS IT / Eff. IT</td></tr>
+          <tr><td>🟡</td><td>Recouv appels : optimisation plages + ciblage (réduction non aboutis)</td><td>—</td><td>S3</td><td>QS / aboutis / MER</td></tr>
+          <tr><td>🟡</td><td>Recouv clics : augmenter volume sans dégrader (%OK ≥ 60%)</td><td>—</td><td>S4</td><td>#clics / %OK / €</td></tr>
+          <tr><td>🟡</td><td>Tickets : priorisation (SLA) + fast lane pour baisser TTR (56,2h)</td><td>—</td><td>S4</td><td>TTR / backlog</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>4. Format recommandé (mi-mois)</h2>
+      <table class="simple-table">
+        <thead><tr><th>Durée</th><th>Bloc</th><th>Contenu</th></tr></thead>
+        <tbody>
+          <tr><td>5 min</td><td>Intro</td><td>Objectifs, points d’arbitrage, risques fin de mois</td></tr>
+          <tr><td>15 min</td><td>Trajectoire KPI</td><td>Prospect / Client / Vigie : volumes, QS, efficacité, points de rupture</td></tr>
+          <tr><td>10 min</td><td>Recouvrement</td><td>Arbitrage appels vs clics, plan volume, focus pays</td></tr>
+          <tr><td>10 min</td><td>Tickets</td><td>Backlog + TTR, priorisation, routine</td></tr>
+          <tr><td>15 min</td><td>Décisions</td><td>Actions, responsables, échéances, KPI</td></tr>
+          <tr><td>5 min</td><td>Wrap-up</td><td>Récap + prochaines étapes</td></tr>
+        </tbody>
+      </table>
+      <div class="success"><strong>Durée cible :</strong> ~60 minutes.</div>
     </div>
   </section>
 
