@@ -1,6 +1,7 @@
 {
   "dashboards": [
     { "id": "2026-03", "label": "Mars 2026", "file": "./dashboards/2026-03.html" },
-    { "id": "2026-04-mi", "label": "Avril 2026 (mi-mois)", "file": "./dashboards/2026-04-mi.html" }
+    { "id": "2026-04-mi", "label": "Avril 2026 (mi-mois)", "file": "./dashboards/2026-04-mi.html" },
+    { "id": "2026-04", "label": "Avril 2026", "file": "./dashboards/2026-04.html" }
   ]
 }
