@@ -5,1297 +5,1236 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Opérationnel — Avril 2026</title>
   <style>
-    :root {
-      --bg: #f4f7f9;
-      --surface: #ffffff;
-      --surface-soft: #f8fafb;
-      --line: #d8e0e6;
-      --text: #20313d;
-      --muted: #6f7d86;
-      --primary: #2B4455;
-      --accent: #C68779;
-      --steel: #707E88;
-      --success: #2c8b57;
-      --danger: #c24d4d;
-      --warning: #d08b2e;
-      --shadow: 0 14px 40px rgba(43, 68, 85, 0.10);
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --radius-md: 14px;
-      --radius-sm: 10px;
+    :root{
+      --bg:#f4f7f9;
+      --card:#ffffff;
+      --text:#20313d;
+      --muted:#707E88;
+      --line:#d9e1e6;
+      --primary:#2B4455;
+      --accent:#C68779;
+      --ok:#1f8f5f;
+      --warn:#d58b28;
+      --bad:#c84e4e;
+      --shadow:0 10px 28px rgba(43,68,85,.08);
+      --radius:18px;
     }
 
-    * {
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#f8fafb 0%, var(--bg) 100%);
+      color:var(--text);
     }
 
-    html {
-      scroll-behavior: smooth;
+    .wrap{
+      max-width:1400px;
+      margin:0 auto;
+      padding:24px;
     }
 
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(198, 135, 121, 0.12), transparent 28%),
-        linear-gradient(180deg, #f8fbfc 0%, #f3f6f8 100%);
-      color: var(--text);
+    header.hero{
+      background:linear-gradient(135deg,var(--primary) 0%, #39586d 100%);
+      color:#fff;
+      border-radius:26px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
     }
 
-    .page {
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 28px;
+    .hero-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:20px;
+      flex-wrap:wrap;
     }
 
-    .hero {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, var(--primary) 0%, #35586f 65%, var(--steel) 100%);
-      color: #fff;
-      border-radius: 28px;
-      padding: 32px;
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
+    .hero h1{
+      margin:0 0 8px;
+      font-size:36px;
+      line-height:1.05;
+      letter-spacing:-.03em;
     }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -80px -100px auto;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      filter: blur(8px);
+    .hero p{
+      margin:0;
+      max-width:900px;
+      color:rgba(255,255,255,.88);
+      line-height:1.6;
     }
 
-    .hero-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
+    .hero-badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
     }
 
-    .hero h1 {
-      margin: 0 0 10px;
-      font-size: clamp(28px, 5vw, 42px);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
+    .hero-badges span{
+      display:inline-flex;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      font-size:13px;
+      font-weight:700;
     }
 
-    .hero p {
-      margin: 0;
-      max-width: 860px;
-      color: rgba(255, 255, 255, 0.88);
-      font-size: 15px;
-      line-height: 1.6;
+    nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:18px;
+      padding:12px;
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(112,126,136,.14);
+      border-radius:18px;
+      backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      z-index:10;
     }
 
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 22px;
+    nav button{
+      border:none;
+      background:#fff;
+      color:var(--primary);
+      padding:11px 15px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      border:1px solid rgba(43,68,85,.08);
+      box-shadow:0 4px 12px rgba(43,68,85,.04);
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 38px;
-      padding: 0 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 700;
-      backdrop-filter: blur(8px);
+    nav button.active{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 10px 20px rgba(43,68,85,.18);
     }
 
-    .tabs {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 0 0 22px;
-      padding: 14px;
-      background: rgba(244, 247, 249, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(112, 126, 136, 0.12);
-      border-radius: 20px;
+    .tab{display:none}
+    .tab.active{display:block}
+
+    .kpi-row{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:14px;
+      margin-bottom:16px;
     }
 
-    .tab-btn {
-      border: none;
-      background: #fff;
-      color: var(--primary);
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: 0.2s ease;
-      box-shadow: 0 4px 14px rgba(43, 68, 85, 0.06);
+    .kpi{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
     }
 
-    .tab-btn:hover {
-      transform: translateY(-1px);
-      border-color: rgba(43, 68, 85, 0.10);
+    .kpi .v{
+      font-size:34px;
+      font-weight:800;
+      color:var(--primary);
+      line-height:1;
+      letter-spacing:-.03em;
+      margin-bottom:8px;
     }
 
-    .tab-btn.active {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 10px 22px rgba(43, 68, 85, 0.22);
+    .kpi .l{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.4;
     }
 
-    .panel {
-      display: none;
-      animation: fadeIn 0.22s ease;
+    .grid2,.grid3,.grid4{
+      display:grid;
+      gap:16px;
+      margin-bottom:16px;
     }
 
-    .panel.active {
-      display: block;
+    .grid2{grid-template-columns:repeat(2,1fr)}
+    .grid3{grid-template-columns:repeat(3,1fr)}
+    .grid4{grid-template-columns:repeat(4,1fr)}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin-bottom:16px;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .card h2,.card h3{
+      margin:0 0 12px;
+      color:var(--primary);
+      letter-spacing:-.02em;
     }
 
-    .section {
-      margin-bottom: 22px;
-      background: var(--surface);
-      border: 1px solid rgba(112, 126, 136, 0.12);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      overflow: hidden;
+    .card p{line-height:1.65}
+    .card ul{margin:0; padding-left:18px}
+    .card li{line-height:1.65; margin:6px 0}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:14px;
     }
 
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 24px 24px 0;
-      flex-wrap: wrap;
+    th,td{
+      padding:11px 12px;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+      vertical-align:top;
     }
 
-    .section-head h2 {
-      margin: 0;
-      font-size: 24px;
-      color: var(--primary);
-      letter-spacing: -0.02em;
+    thead th{
+      background:#f3f6f8;
+      color:var(--primary);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
     }
 
-    .section-head p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      line-height: 1.6;
-      max-width: 900px;
+    tbody tr:last-child td{border-bottom:none}
+
+    .simple-table{
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      display:block;
     }
 
-    .section-body {
-      padding: 24px;
+    .simple-table table{border:none}
+
+    .success,
+    .alert,
+    .comment,
+    .note{
+      padding:14px 16px;
+      border-radius:14px;
+      line-height:1.65;
+      margin-top:12px;
     }
 
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 16px;
+    .success{
+      background:rgba(31,143,95,.10);
+      color:#1c6d49;
+      border:1px solid rgba(31,143,95,.14);
     }
 
-    .summary-card {
-      grid-column: span 3;
-      min-height: 132px;
-      background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
-      border: 1px solid rgba(112, 126, 136, 0.12);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 10px 24px rgba(43, 68, 85, 0.06);
+    .alert{
+      background:rgba(213,139,40,.10);
+      color:#8a5a16;
+      border:1px solid rgba(213,139,40,.16);
     }
 
-    .summary-card.wide {
-      grid-column: span 6;
+    .comment{
+      background:rgba(43,68,85,.06);
+      color:var(--text);
+      border:1px solid rgba(43,68,85,.08);
     }
 
-    .summary-card .label {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 10px;
+    .note{
+      background:rgba(198,135,121,.10);
+      color:#7f5147;
+      border:1px solid rgba(198,135,121,.16);
     }
 
-    .summary-card .value {
-      font-size: clamp(28px, 4vw, 38px);
-      line-height: 1;
-      font-weight: 800;
-      color: var(--primary);
-      letter-spacing: -0.03em;
-      margin-bottom: 10px;
+    .up{color:var(--ok); font-weight:700}
+    .dn{color:var(--bad); font-weight:700}
+    .dim{color:var(--muted)}
+
+    .discussion-kicker{
+      display:inline-block;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:10px;
     }
 
-    .summary-card .sub {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
+    .discussion-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px;
     }
 
-    .delta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 30px;
-      padding: 0 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      margin-top: 10px;
+    .discussion-subtitle{
+      font-weight:800;
+      color:var(--primary);
+      margin-bottom:8px;
     }
 
-    .delta.down {
-      color: var(--danger);
-      background: rgba(194, 77, 77, 0.10);
+    .discussion-list{
+      margin:0;
+      padding-left:18px;
     }
 
-    .delta.up {
-      color: var(--success);
-      background: rgba(44, 139, 87, 0.10);
+    .doc-link-inline{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:12px;
+      padding:10px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      color:#fff;
+      background:var(--primary);
+      font-weight:700;
     }
 
-    .delta.flat {
-      color: var(--warning);
-      background: rgba(208, 139, 46, 0.10);
+    .action-table td:first-child{
+      white-space:nowrap;
+      font-weight:700;
     }
 
-    .cards-2,
-    .cards-3,
-    .cards-4 {
-      display: grid;
-      gap: 16px;
+    @media (max-width:1100px){
+      .kpi-row{grid-template-columns:repeat(2,1fr)}
+      .grid3{grid-template-columns:1fr}
+      .grid4{grid-template-columns:repeat(2,1fr)}
+      .discussion-grid{grid-template-columns:1fr}
     }
 
-    .cards-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .cards-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .cards-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .card {
-      background: var(--surface-soft);
-      border: 1px solid rgba(112, 126, 136, 0.14);
-      border-radius: 20px;
-      padding: 18px;
-    }
-
-    .card h3 {
-      margin: 0 0 12px;
-      font-size: 17px;
-      color: var(--primary);
-    }
-
-    .card p,
-    .card li {
-      color: var(--text);
-      line-height: 1.65;
-    }
-
-    .card ul {
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    .card li + li {
-      margin-top: 8px;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid rgba(112, 126, 136, 0.14);
-      border-radius: 18px;
-      background: #fff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 880px;
-    }
-
-    th,
-    td {
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(112, 126, 136, 0.10);
-      text-align: left;
-      font-size: 14px;
-    }
-
-    th {
-      background: #f3f7f9;
-      color: var(--primary);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    .kpi-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px dashed rgba(112, 126, 136, 0.16);
-    }
-
-    .kpi-line:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .kpi-line:first-child {
-      padding-top: 0;
-    }
-
-    .kpi-line strong {
-      color: var(--primary);
-      font-size: 18px;
-    }
-
-    .note {
-      padding: 16px 18px;
-      border-left: 4px solid var(--accent);
-      background: rgba(198, 135, 121, 0.08);
-      border-radius: 0 14px 14px 0;
-      color: var(--text);
-      line-height: 1.65;
-    }
-
-    .pill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .pill {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(43, 68, 85, 0.08);
-      color: var(--primary);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .discussion-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 16px;
-    }
-
-    .footer-note {
-      margin-top: 22px;
-      padding: 18px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 1100px) {
-      .summary-card {
-        grid-column: span 6;
-      }
-
-      .summary-card.wide {
-        grid-column: span 12;
-      }
-
-      .cards-4 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .discussion-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .page {
-        padding: 16px;
-      }
-
-      .hero {
-        padding: 22px;
-        border-radius: 22px;
-      }
-
-      .section-head,
-      .section-body {
-        padding: 18px;
-      }
-
-      .summary-card,
-      .summary-card.wide {
-        grid-column: span 12;
-      }
-
-      .cards-2,
-      .cards-3,
-      .cards-4 {
-        grid-template-columns: 1fr;
-      }
-
-      .tabs {
-        position: static;
-      }
+    @media (max-width:700px){
+      .wrap{padding:14px}
+      .hero{padding:20px}
+      .hero h1{font-size:30px}
+      .kpi-row,.grid2,.grid4{grid-template-columns:1fr}
+      nav{position:static}
     }
   </style>
 </head>
 <body>
-  <div class="page">
+  <div class="wrap">
     <header class="hero">
       <div class="hero-top">
         <div>
           <h1>Dashboard Opérationnel — Avril 2026</h1>
           <p>
-            Synthèse mensuelle BestCall x Wengo. Avril est marqué par une baisse sur les flux
-            Prospect et Client, une progression de la Vigie et du Recouvrement, et une activité
-            Tickets soutenue avec un volume traité supérieur au créé.
+            Synthèse mensuelle BestCall x Wengo. Avril 2026 montre une baisse sur les flux Prospect et Client,
+            une légère progression de la Vigie, une hausse du Recouvrement en charge mais sans conversion finale,
+            et une activité Tickets qui reste bien absorbée.
           </p>
           <div class="hero-badges">
-            <span class="badge">Période : Avril 2026</span>
-            <span class="badge">Style aligné sur Mars</span>
-            <span class="badge">Onglet Vigie activé</span>
+            <span>Avril 2026</span>
+            <span>Même structure que Mars</span>
+            <span>HC remplacé par Vigie</span>
           </div>
         </div>
       </div>
     </header>
 
-    <nav class="tabs" aria-label="Navigation du dashboard">
-      <button class="tab-btn active" data-tab="copil">Copil</button>
-      <button class="tab-btn" data-tab="overview">Vue d’ensemble</button>
-      <button class="tab-btn" data-tab="prospect">Prospect</button>
-      <button class="tab-btn" data-tab="client">Client</button>
-      <button class="tab-btn" data-tab="vigie">Vigie</button>
-      <button class="tab-btn" data-tab="recouv">Recouvrement</button>
-      <button class="tab-btn" data-tab="tickets">Tickets</button>
-      <button class="tab-btn" data-tab="discussion">Discussion</button>
+    <nav>
+      <button data-t="copil" class="active">Copil</button>
+      <button data-t="overview">Vue d’ensemble</button>
+      <button data-t="prospect">Prospect</button>
+      <button data-t="client">Client</button>
+      <button data-t="vigie">Vigie</button>
+      <button data-t="recouv">Recouvrement</button>
+      <button data-t="tickets">Tickets</button>
+      <button data-t="discussion">Discussion</button>
     </nav>
 
-    <main>
-      <section class="panel active" id="panel-copil">
-        <div class="section">
-          <div class="section-head">
-            <div>
-              <h2>Copil</h2>
-              <p>Vue de pilotage rapide sur les grands signaux du mois et les points d’attention opérationnels.</p>
+    <!-- ========== COPIL ========== -->
+    <section id="copil" class="tab active">
+      <div class="kpi-row">
+        <div class="kpi"><div class="v">926</div><div class="l">Prospect reçus · 850 traités · QS 92%</div></div>
+        <div class="kpi"><div class="v">8 451</div><div class="l">Client reçus · 8 286 traités · QS 98%</div></div>
+        <div class="kpi"><div class="v">2 740</div><div class="l">Vigie · 1 110 traités · QS 41%</div></div>
+        <div class="kpi"><div class="v">9 670</div><div class="l">Recouvrement · 3 097 traités · QS 32%</div></div>
+        <div class="kpi"><div class="v">552</div><div class="l">Tickets créés · 1 054 traités · 60,9h</div></div>
+      </div>
+
+      <div class="success">
+        <strong>✅ Ce qu’on retient :</strong> la qualité reste solide sur Client, la Vigie progresse légèrement,
+        les Tickets absorbent bien le stock. En revanche, Prospect recule et Recouvrement reste peu transformant.
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <h2>Points forts</h2>
+          <ul>
+            <li><strong>Client</strong> conserve une très bonne QS à <strong>98%</strong>.</li>
+            <li><strong>Portugal Client</strong> reste la locomotive du mois avec <strong>5 012</strong> contacts.</li>
+            <li><strong>Vigie</strong> progresse en volume, traités et MER/RDV.</li>
+            <li><strong>Tickets</strong> : 1 054 traités pour 552 créés → dynamique de rattrapage.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Points de vigilance</h2>
+          <ul>
+            <li><strong>Prospect</strong> : baisse du volume, des traités et surtout des MER/RDV.</li>
+            <li><strong>Italie Prospect</strong> reste sous les objectifs d’efficacité.</li>
+            <li><strong>Vigie</strong> : QS à 41% seulement.</li>
+            <li><strong>Recouvrement</strong> : activité en hausse, mais efficacité quasi nulle.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Priorités de pilotage</h2>
+          <ul>
+            <li>Relancer la transformation <strong>Prospect</strong>.</li>
+            <li>Travailler les pays sous objectif sur Prospect et Client.</li>
+            <li>Optimiser le ciblage en <strong>Vigie</strong> et <strong>Recouvrement</strong>.</li>
+            <li>Réduire le temps moyen de résolution Tickets.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== OVERVIEW ========== -->
+    <section id="overview" class="tab">
+      <div class="card">
+        <h2>Vue d’ensemble — Avril 2026</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Flux</th>
+              <th>Volume</th>
+              <th># traités</th>
+              <th>QS</th>
+              <th>MER / RDV / Montant</th>
+              <th>Efficacité</th>
+              <th>%Δ volume</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Prospect</td>
+              <td>926</td>
+              <td>850</td>
+              <td>92%</td>
+              <td>150</td>
+              <td>18%</td>
+              <td class="dn">-10,7%</td>
+            </tr>
+            <tr>
+              <td>Client</td>
+              <td>8 451</td>
+              <td>8 286</td>
+              <td>98%</td>
+              <td>5 024</td>
+              <td>61%</td>
+              <td class="dn">-2,1%</td>
+            </tr>
+            <tr>
+              <td>Vigie</td>
+              <td>2 740</td>
+              <td>1 110</td>
+              <td>41%</td>
+              <td>98</td>
+              <td>9%</td>
+              <td class="up">+2,7%</td>
+            </tr>
+            <tr>
+              <td>Recouvrement</td>
+              <td>9 670</td>
+              <td>3 097</td>
+              <td>32%</td>
+              <td>3</td>
+              <td>0%</td>
+              <td class="up">+9,1%</td>
+            </tr>
+            <tr>
+              <td>Clics</td>
+              <td>1 524</td>
+              <td>899 tentatives OK</td>
+              <td>59%</td>
+              <td>33 773 €</td>
+              <td>—</td>
+              <td class="dn">-23,9%</td>
+            </tr>
+            <tr>
+              <td>Tickets</td>
+              <td>552 créés</td>
+              <td>1 054 traités</td>
+              <td>332 clôturés</td>
+              <td>717 fermés</td>
+              <td>60,9h</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Lecture rapide</h2>
+          <ul>
+            <li>Le socle <strong>Client</strong> reste solide malgré un léger repli.</li>
+            <li><strong>Prospect</strong> souffre davantage, surtout sur la conversion.</li>
+            <li><strong>Vigie</strong> progresse mais reste faible en qualité absolue.</li>
+            <li><strong>Recouvrement</strong> absorbe plus de charge sans résultat final tangible.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Focus managérial</h2>
+          <ul>
+            <li>Revoir les causes de baisse des MER/RDV sur Prospect.</li>
+            <li>Consolider la France et l’Italie sur Client.</li>
+            <li>Requalifier les flux Vigie.</li>
+            <li>Arbitrer le modèle Recouvrement si l’efficacité reste à 0%.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROSPECT ========== -->
+    <section id="prospect" class="tab">
+      <div class="kpi-row">
+        <div class="kpi"><div class="v">926</div><div class="l">Volume reçu <span class="dn">-10,7%</span></div></div>
+        <div class="kpi"><div class="v">850</div><div class="l">Traités <span class="dn">-11,0%</span></div></div>
+        <div class="kpi"><div class="v">92%</div><div class="l">QS <span class="dn">-0,3%</span></div></div>
+        <div class="kpi"><div class="v">150</div><div class="l">MER / RDV <span class="dn">-22,7%</span></div></div>
+        <div class="kpi"><div class="v">18%</div><div class="l">Efficacité <span class="dn">-13,1%</span></div></div>
+      </div>
+
+      <div class="alert">
+        <strong>⚠ Signal principal :</strong> la baisse d’avril ne porte pas seulement sur le volume entrant,
+        mais aussi sur la transformation. Le recul des MER/RDV est plus fort que celui des traités.
+      </div>
+
+      <div class="card">
+        <h2>Prospect — Répartition par pays</h2>
+        <table>
+          <thead><tr><th>Pays</th><th>Volume</th><th>Traités</th><th>QS</th><th>MER/RDV</th><th>Efficacité</th></tr></thead>
+          <tbody>
+            <tr><td>France</td><td>452</td><td>423</td><td>93,6%</td><td>72</td><td>17,0%</td></tr>
+            <tr><td>Italie</td><td>267</td><td>242</td><td>90,6%</td><td>32</td><td>13,2%</td></tr>
+            <tr><td>Espagne</td><td>116</td><td>105</td><td>90,5%</td><td>27</td><td>25,7%</td></tr>
+            <tr><td>Portugal</td><td>61</td><td>54</td><td>88,5%</td><td>16</td><td>29,6%</td></tr>
+            <tr><td>Latino</td><td>18</td><td>15</td><td>83,3%</td><td>1</td><td>6,7%</td></tr>
+            <tr><td>Turquie</td><td>11</td><td>10</td><td>90,9%</td><td>1</td><td>10,0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Lecture</h2>
+          <ul>
+            <li><strong>France</strong> reste le premier bassin de volume.</li>
+            <li><strong>Italie</strong> pèse encore lourd mais avec une efficacité basse.</li>
+            <li><strong>Espagne</strong> et <strong>Portugal</strong> affichent les meilleures efficacités.</li>
+            <li><strong>Latino</strong> et <strong>Turquie</strong> ont des volumes trop faibles pour lisser la variabilité.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Objectifs Prospect</h2>
+          <table>
+            <thead><tr><th>Pays / Zone</th><th>Objectif</th><th>Avril</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td>ES/LAT</td><td>33%</td><td>25,7% / 6,7%</td><td class="dn">Sous objectif</td></tr>
+              <tr><td>IT</td><td>19%</td><td>13,2%</td><td class="dn">Sous objectif</td></tr>
+              <tr><td>FR</td><td>24%</td><td>17,0%</td><td class="dn">Sous objectif</td></tr>
+              <tr><td>PT</td><td>35%</td><td>29,6%</td><td class="dn">Sous objectif</td></tr>
+              <tr><td>TR</td><td>20%</td><td>10,0%</td><td class="dn">Sous objectif</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CLIENT ========== -->
+    <section id="client" class="tab">
+      <div class="kpi-row">
+        <div class="kpi"><div class="v">8 451</div><div class="l">Volume reçu <span class="dn">-2,1%</span></div></div>
+        <div class="kpi"><div class="v">8 286</div><div class="l">Traités <span class="dn">-2,4%</span></div></div>
+        <div class="kpi"><div class="v">98%</div><div class="l">QS <span class="dn">-0,3%</span></div></div>
+        <div class="kpi"><div class="v">5 024</div><div class="l">MER / RDV <span class="dn">-5,5%</span></div></div>
+        <div class="kpi"><div class="v">61%</div><div class="l">Efficacité <span class="dn">-3,2%</span></div></div>
+      </div>
+
+      <div class="success">
+        <strong>✅ Point fort :</strong> malgré un léger retrait des volumes, l’activité Client reste très bien tenue,
+        avec une QS excellente et une efficacité globale encore élevée.
+      </div>
+
+      <div class="card">
+        <h2>Client — Répartition par pays</h2>
+        <table>
+          <thead><tr><th>Pays</th><th>Volume</th><th>Traités</th><th>QS</th><th>MER/RDV</th><th>Efficacité</th></tr></thead>
+          <tbody>
+            <tr><td>Portugal</td><td>5 012</td><td>4 956</td><td>98,9%</td><td>3 157</td><td>63,7%</td></tr>
+            <tr><td>France</td><td>1 207</td><td>1 183</td><td>98,0%</td><td>630</td><td>53,3%</td></tr>
+            <tr><td>Italie</td><td>763</td><td>733</td><td>96,1%</td><td>390</td><td>53,2%</td></tr>
+            <tr><td>Espagne</td><td>753</td><td>725</td><td>96,3%</td><td>408</td><td>56,3%</td></tr>
+            <tr><td>Turquie</td><td>360</td><td>337</td><td>93,6%</td><td>209</td><td>62,0%</td></tr>
+            <tr><td>Latino</td><td>351</td><td>347</td><td>98,9%</td><td>228</td><td>65,7%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Lecture</h2>
+          <ul>
+            <li><strong>Portugal</strong> domine largement le portefeuille et reste performant.</li>
+            <li><strong>France</strong> et <strong>Italie</strong> sont juste au-dessus de 53% d’efficacité.</li>
+            <li><strong>Latino</strong> et <strong>Turquie</strong> affichent de bons niveaux de conversion.</li>
+            <li>La baisse des MER/RDV est plus marquée que la baisse du volume.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Objectifs Client</h2>
+          <table>
+            <thead><tr><th>Pays / Zone</th><th>Objectif</th><th>Avril</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td>ES/LAT</td><td>53%</td><td>56,3% / 65,7%</td><td class="up">Atteint</td></tr>
+              <tr><td>IT</td><td>50%</td><td>53,2%</td><td class="up">Atteint</td></tr>
+              <tr><td>FR</td><td>57%</td><td>53,3%</td><td class="dn">Sous objectif</td></tr>
+              <tr><td>PT</td><td>63%</td><td>63,7%</td><td class="up">Atteint</td></tr>
+              <tr><td>TR</td><td>60%</td><td>62,0%</td><td class="up">Atteint</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIGIE ========== -->
+    <section id="vigie" class="tab">
+      <div class="kpi-row">
+        <div class="kpi"><div class="v">2 740</div><div class="l">Volume reçu <span class="up">+2,7%</span></div></div>
+        <div class="kpi"><div class="v">1 110</div><div class="l">Traités <span class="up">+2,9%</span></div></div>
+        <div class="kpi"><div class="v">41%</div><div class="l">QS <span class="up">+0,2%</span></div></div>
+        <div class="kpi"><div class="v">98</div><div class="l">MER / RDV <span class="up">+7,7%</span></div></div>
+        <div class="kpi"><div class="v">9%</div><div class="l">Efficacité <span class="up">+4,7%</span></div></div>
+      </div>
+
+      <div class="success">
+        <strong>✅ Tendance positive :</strong> tous les indicateurs Vigie progressent sur avril.
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Lecture Vigie</h2>
+          <ul>
+            <li>Le flux est en légère hausse.</li>
+            <li>Le nombre de dossiers traités progresse aussi.</li>
+            <li>Les MER/RDV augmentent, mais sur une base encore modeste.</li>
+            <li>La QS à 41% reste faible en niveau absolu.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Point de vigilance</h2>
+          <ul>
+            <li>Avec seulement <strong>9%</strong> d’efficacité, le levier principal reste la qualification amont.</li>
+            <li>Il faut réduire les dossiers peu exploitables.</li>
+            <li>Le gain de volume n’a de valeur que s’il s’accompagne d’un gain de conversion.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note">
+        La Vigie remplace ici l’ancien onglet <strong>HC</strong> du dashboard de mars.
+      </div>
+    </section>
+
+    <!-- ========== RECOUVREMENT ========== -->
+    <section id="recouv" class="tab">
+      <div class="kpi-row">
+        <div class="kpi"><div class="v">9 670</div><div class="l">Appels / dossiers <span class="up">+9,1%</span></div></div>
+        <div class="kpi"><div class="v">3 097</div><div class="l">Traités <span class="up">+19,3%</span></div></div>
+        <div class="kpi"><div class="v">32%</div><div class="l">QS <span class="up">+9,4%</span></div></div>
+        <div class="kpi"><div class="v">3</div><div class="l">MER / RDV <span class="dn">-25,0%</span></div></div>
+        <div class="kpi"><div class="v">0%</div><div class="l">Efficacité <span class="dn">-37,1%</span></div></div>
+      </div>
+
+      <div class="alert">
+        <strong>⚠ Signal majeur :</strong> le Recouvrement grossit en charge et améliore sa QS,
+        mais l’issue métier reste quasi nulle. Le volume n’apporte pas de conversion.
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Clics</h2>
+          <table>
+            <thead><tr><th>Indicateur</th><th>Valeur</th><th>%Δ</th></tr></thead>
+            <tbody>
+              <tr><td>Clics</td><td>1 524</td><td class="dn">-23,9%</td></tr>
+              <tr><td>Tentatives OK</td><td>899</td><td class="dn">-7,6%</td></tr>
+              <tr><td>% OK</td><td>59%</td><td class="up">+21,4%</td></tr>
+              <tr><td>Montant recouvré</td><td>33 773 €</td><td class="dn">-1,6%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>Lecture Recouvrement</h2>
+          <ul>
+            <li>Le ciblage semble meilleur côté clics, car le <strong>% OK</strong> progresse nettement.</li>
+            <li>Le volume de clics est toutefois en forte baisse.</li>
+            <li>Le montant recouvré tient relativement bien malgré le recul d’activité.</li>
+            <li>Le canal appels / traitement doit être revu au vu de l’efficacité finale.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Recouvré &gt; 3 mois</h2>
+        <div class="comment">
+          Détail annuaire non visible dans les éléments d’avril transmis. On peut garder ce bloc comme en mars
+          et le compléter dès que tu m’envoies la capture correspondante.
+        </div>
+        <table>
+          <thead><tr><th>Annuaire</th><th>€ Rec.</th><th>%Δ</th></tr></thead>
+          <tbody>
+            <tr class="dim"><td>À compléter</td><td>—</td><td>—</td></tr>
+            <tr class="dim"><td>À compléter</td><td>—</td><td>—</td></tr>
+            <tr class="dim"><td>À compléter</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========== TICKETS ========== -->
+    <section id="tickets" class="tab">
+      <div class="kpi-row">
+        <div class="kpi"><div class="v">552</div><div class="l">Tickets créés</div></div>
+        <div class="kpi"><div class="v">1 054</div><div class="l">Tickets traités</div></div>
+        <div class="kpi"><div class="v">332</div><div class="l">Clôturés</div></div>
+        <div class="kpi"><div class="v">717</div><div class="l">Fermés</div></div>
+        <div class="kpi"><div class="v">60,9h</div><div class="l">Temps moyen résolution</div></div>
+      </div>
+
+      <div class="success">
+        <strong>✅ Stock en réduction :</strong> 1 054 traités &gt; 552 créés → la capacité de traitement est supérieure au flux entrant.
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <h2>Vue générale</h2>
+          <table>
+            <thead><tr><th>Indicateur</th><th>Valeur</th></tr></thead>
+            <tbody>
+              <tr><td>Tickets créés</td><td>552</td></tr>
+              <tr><td>Tickets traités</td><td>1 054</td></tr>
+              <tr><td>Tickets clôturés</td><td>332</td></tr>
+              <tr><td>Tickets fermés</td><td>717</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>Performance</h2>
+          <table>
+            <thead><tr><th>Indicateur</th><th>Valeur</th></tr></thead>
+            <tbody>
+              <tr><td>Temps moyen de résolution</td><td>60,9h</td></tr>
+              <tr><td>Flux absorbé</td><td class="up">Oui</td></tr>
+              <tr><td>Tendance backlog</td><td class="up">En baisse</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>Commentaire</h2>
+          <div class="comment">
+            Le niveau de traitement est rassurant, mais le délai moyen de résolution reste un axe
+            d’amélioration important par rapport à mars.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DISCUSSION ========== -->
+    <section id="discussion" class="tab">
+      <div class="card">
+        <span class="discussion-kicker">Discussion</span>
+        <h2>💬 Guide de discussion Copil — Avril 2026</h2>
+        <div class="comment">
+          Cette page sert de support de discussion pendant la revue mensuelle d’avril 2026.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>0. Objectifs de la séance & guide de discussion</h2>
+        <div class="discussion-grid">
+          <div>
+            <div class="discussion-subtitle">Rappel du cadre</div>
+            <ul class="discussion-list">
+              <li>Traitement des flux entrants : Prospect, Client, Vigie</li>
+              <li>Traitement des flux sortants : Recouvrement</li>
+              <li>Efficacité mesurée par la mise en relation / prise de RDV</li>
+              <li>Comprendre la qualité des traitements sans MER</li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="discussion-subtitle">Ce qu’on regarde en Copil</div>
+            <ul class="discussion-list">
+              <li>Atteinte des objectifs en traitement et efficacité</li>
+              <li>Évolution des volumes et déséquilibres par pays</li>
+              <li>Impact réel des flux annexes</li>
+              <li>Actions à lancer pour mai 2026</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>1. Traitement & efficacité — Atteint-on les objectifs ?</h2>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>1.1 Flux Prospect (entrant)</h3>
+            <table class="simple-table">
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>Données Avril</th>
+                  <th>Diagnostic</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Volume traité ?</td>
+                  <td>850 traités sur 926 reçus</td>
+                  <td>✅ QS 92%, correcte</td>
+                </tr>
+                <tr>
+                  <td>Efficacité MER ?</td>
+                  <td>150 MER / RDV, efficacité 18%</td>
+                  <td>⚠ En baisse sensible</td>
+                </tr>
+                <tr>
+                  <td>Répartition saine ?</td>
+                  <td>FR 49%, IT 29%, ES 13%, PT 7%</td>
+                  <td>⚠ Concentration FR/IT, mais conversion plus forte en ES/PT</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="alert">
+              <strong>Points à creuser :</strong>
+              <ul class="discussion-list">
+                <li>Pourquoi la transformation recule-t-elle plus vite que le volume ?</li>
+                <li>Italie : comment remonter l’efficacité au-dessus de 19% ?</li>
+                <li>Peut-on injecter plus de volume rentable en Espagne et au Portugal ?</li>
+              </ul>
             </div>
           </div>
-          <div class="section-body">
-            <div class="summary-grid">
-              <article class="summary-card">
-                <div class="label">Prospect</div>
-                <div class="value">926</div>
-                <div class="sub">850 traités · QS 92% · 150 MER/RDV · efficacité 18%</div>
-                <div class="delta down">▼ -10,7%</div>
-              </article>
 
-              <article class="summary-card">
-                <div class="label">Client</div>
-                <div class="value">8 451</div>
-                <div class="sub">8 286 traités · QS 98% · 5 024 MER/RDV · efficacité 61%</div>
-                <div class="delta down">▼ -2,1%</div>
-              </article>
+          <div class="card">
+            <h3>1.2 Flux Client (entrant)</h3>
+            <table class="simple-table">
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>Données Avril</th>
+                  <th>Diagnostic</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Volume traité ?</td>
+                  <td>8 286 traités sur 8 451 reçus</td>
+                  <td>✅ QS 98%, excellente</td>
+                </tr>
+                <tr>
+                  <td>Efficacité MER ?</td>
+                  <td>5 024 MER / RDV, efficacité 61%</td>
+                  <td>✅ Niveau encore solide</td>
+                </tr>
+                <tr>
+                  <td>Segments pays ?</td>
+                  <td>PT domine, LAT/TR performants</td>
+                  <td>⚠ France sous objectif</td>
+                </tr>
+              </tbody>
+            </table>
 
-              <article class="summary-card">
-                <div class="label">Vigie</div>
-                <div class="value">2 740</div>
-                <div class="sub">1 110 traités · QS 41% · 98 MER/RDV · efficacité 9%</div>
-                <div class="delta up">▲ +2,7%</div>
-              </article>
-
-              <article class="summary-card">
-                <div class="label">Recouvrement</div>
-                <div class="value">9 670</div>
-                <div class="sub">3 097 traités · QS 32% · 3 MER/RDV · efficacité 0%</div>
-                <div class="delta up">▲ +9,1%</div>
-              </article>
-
-              <article class="summary-card wide">
-                <div class="label">Lecture managériale</div>
-                <div class="sub">
-                  Avril présente un mois contrasté : recul de la production commerciale sur Prospect et Client,
-                  mais maintien d’une qualité élevée, en particulier côté Client. La Vigie progresse légèrement
-                  en volume mais reste structurellement faible en QS et en efficacité. Le Recouvrement augmente
-                  fortement en sollicitations et en traités, mais la conversion finale demeure quasi nulle.
-                  Enfin, les Tickets montrent une bonne capacité d’absorption avec davantage de tickets traités
-                  et fermés que créés.
-                </div>
-              </article>
-            </div>
-
-            <div class="cards-3" style="margin-top: 16px;">
-              <article class="card">
-                <h3>Points forts</h3>
-                <ul>
-                  <li>QS Client très élevé à <strong>98%</strong>.</li>
-                  <li>Portugal Client reste le principal moteur avec <strong>5 012 contacts</strong>.</li>
-                  <li>Vigie en hausse sur le volume global et le nombre de MER/RDV.</li>
-                  <li>Tickets traités <strong>(1 054)</strong> supérieurs aux tickets créés <strong>(552)</strong>.</li>
-                </ul>
-              </article>
-
-              <article class="card">
-                <h3>Points de vigilance</h3>
-                <ul>
-                  <li>Prospect en retrait à la fois sur le volume, les traités et l’efficacité.</li>
-                  <li>France et Italie Prospect restent les plus gros bassins mais avec une efficacité en baisse.</li>
-                  <li>QS Vigie à <strong>41%</strong> et QS Recouvrement à <strong>32%</strong> : marges fortes d’amélioration.</li>
-                  <li>Recouvrement : activité en hausse mais impact final encore trop faible.</li>
-                </ul>
-              </article>
-
-              <article class="card">
-                <h3>Actions recommandées</h3>
-                <ul>
-                  <li>Revoir les causes de baisse des MER/RDV sur Prospect.</li>
-                  <li>Sécuriser les pays sous objectif en Prospect : IT, FR, LAT, TR.</li>
-                  <li>Travailler les scripts et priorisations sur Vigie pour améliorer la QS.</li>
-                  <li>Suivre les délais Tickets pour réduire le temps moyen de résolution <strong>(60,9h)</strong>.</li>
-                </ul>
-              </article>
+            <div class="comment">
+              <strong>Points à creuser :</strong>
+              <ul class="discussion-list">
+                <li>France : comment revenir au-dessus de 57% d’efficacité ?</li>
+                <li>Portugal : maintenir la qualité malgré le poids du volume.</li>
+                <li>Latino et Turquie : peut-on capitaliser sur les bonnes performances ?</li>
+              </ul>
             </div>
           </div>
         </div>
-      </section>
 
-      <section class="panel" id="panel-overview">
-        <div class="section">
-          <div class="section-head">
-            <div>
-              <h2>Vue d’ensemble</h2>
-              <p>Comparatif synthétique des activités suivies pour avril 2026.</p>
+        <div class="grid2">
+          <div class="card">
+            <h3>1.3 Flux Recouvrement (sortant)</h3>
+            <table class="simple-table">
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>Données Avril</th>
+                  <th>Diagnostic</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Charge traitée ?</td>
+                  <td>9 670 reçus / 3 097 traités</td>
+                  <td>⚠ Charge en hausse</td>
+                </tr>
+                <tr>
+                  <td>QS ?</td>
+                  <td>32%</td>
+                  <td>⚠ Faible malgré amélioration</td>
+                </tr>
+                <tr>
+                  <td>Montant / résultat ?</td>
+                  <td>33 773 € · 3 MER/RDV</td>
+                  <td>⚠ Conversion finale quasi nulle</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="alert">
+              <strong>Points à creuser :</strong>
+              <ul class="discussion-list">
+                <li>Le modèle d’appels est-il toujours pertinent ?</li>
+                <li>Pourquoi le % OK progresse mais pas la conversion finale ?</li>
+                <li>Quel arbitrage faire entre clics, appels et ciblage ?</li>
+              </ul>
             </div>
           </div>
-          <div class="section-body">
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Activité</th>
-                    <th>Volume</th>
-                    <th>Évolution</th>
-                    <th>Traités</th>
-                    <th>QS / % OK</th>
-                    <th>MER / RDV / Montant</th>
-                    <th>Efficacité</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Prospect</strong></td>
-                    <td>926</td>
-                    <td style="color:#c24d4d;">-10,7%</td>
-                    <td>850</td>
-                    <td>92%</td>
-                    <td>150</td>
-                    <td>18%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Client</strong></td>
-                    <td>8 451</td>
-                    <td style="color:#c24d4d;">-2,1%</td>
-                    <td>8 286</td>
-                    <td>98%</td>
-                    <td>5 024</td>
-                    <td>61%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Vigie</strong></td>
-                    <td>2 740</td>
-                    <td style="color:#2c8b57;">+2,7%</td>
-                    <td>1 110</td>
-                    <td>41%</td>
-                    <td>98</td>
-                    <td>9%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Recouvrement</strong></td>
-                    <td>9 670</td>
-                    <td style="color:#2c8b57;">+9,1%</td>
-                    <td>3 097</td>
-                    <td>32%</td>
-                    <td>3</td>
-                    <td>0%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Clics</strong></td>
-                    <td>1 524</td>
-                    <td style="color:#c24d4d;">-23,9%</td>
-                    <td>899 tentatives OK</td>
-                    <td>59%</td>
-                    <td>33 773 €</td>
-                    <td>—</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Tickets</strong></td>
-                    <td>552 créés</td>
-                    <td>—</td>
-                    <td>1 054 traités</td>
-                    <td>332 clôturés</td>
-                    <td>717 fermés</td>
-                    <td>60,9h</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
 
-            <div class="cards-2" style="margin-top: 16px;">
-              <article class="card">
-                <h3>Ce qu’on retient</h3>
-                <ul>
-                  <li>Le socle Client reste robuste malgré un léger recul global.</li>
-                  <li>Le Prospect recule davantage, notamment sur la génération de MER/RDV.</li>
-                  <li>La Vigie progresse mais doit encore gagner en qualité de traitement.</li>
-                  <li>Le Recouvrement grossit en charge sans progression de conversion associée.</li>
-                </ul>
-              </article>
+          <div class="card">
+            <h3>1.4 Vigie</h3>
+            <table class="simple-table">
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>Données Avril</th>
+                  <th>Diagnostic</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Volume Vigie ?</td>
+                  <td>2 740</td>
+                  <td>✅ En légère hausse</td>
+                </tr>
+                <tr>
+                  <td>Récupération ?</td>
+                  <td>98 MER / RDV, efficacité 9%</td>
+                  <td>⚠ Mieux, mais encore bas</td>
+                </tr>
+                <tr>
+                  <td>Qualité ?</td>
+                  <td>QS 41%</td>
+                  <td>⚠ Gros levier d’amélioration</td>
+                </tr>
+              </tbody>
+            </table>
 
-              <article class="card">
-                <h3>Priorités de pilotage</h3>
-                <ul>
-                  <li>Réallouer l’attention sur la performance Prospect.</li>
-                  <li>Stabiliser les pays à faible efficacité ou faible QS.</li>
-                  <li>Mieux qualifier les flux Vigie et Recouvrement avant traitement.</li>
-                  <li>Suivre le back-office Tickets pour conserver la dynamique de rattrapage.</li>
-                </ul>
-              </article>
+            <div class="alert">
+              <strong>Points à creuser :</strong>
+              <ul class="discussion-list">
+                <li>Quels dossiers Vigie ne devraient pas arriver jusqu’au traitement ?</li>
+                <li>Comment augmenter la part de dossiers réellement exploitables ?</li>
+              </ul>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section class="panel" id="panel-prospect">
-        <div class="section">
-          <div class="section-head">
-            <div>
-              <h2>Prospect</h2>
-              <p>Analyse de la performance Prospect sur avril 2026, avec focus pays et efficacité commerciale.</p>
-            </div>
+      <div class="card">
+        <h2>2. Suivi des actions précédentes — Bilan</h2>
+        <table class="action-table simple-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Action décidée</th>
+              <th>Responsable</th>
+              <th>Statut</th>
+              <th>Résultat observé en avril</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Relancer la transformation Prospect</td>
+              <td>—</td>
+              <td>⚠ À renforcer</td>
+              <td>Efficacité Prospect à 18%, sous attente</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Stabiliser la qualité Client</td>
+              <td>—</td>
+              <td>✅</td>
+              <td>QS Client toujours à 98%</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Améliorer le ciblage des flux annexes</td>
+              <td>—</td>
+              <td>🟡 Partiel</td>
+              <td>Vigie progresse, Recouvrement encore peu efficace</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Résorber le backlog tickets</td>
+              <td>—</td>
+              <td>✅</td>
+              <td>1 054 traités pour 552 créés</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>3. Appels sans mise en relation — Le besoin a-t-il été adressé ?</h2>
+        <div class="grid3">
+          <div class="card">
+            <h3>3.1 Prospect</h3>
+            <ul class="discussion-list">
+              <li>Lead insuffisamment qualifié ?</li>
+              <li>Besoin identifié mais mal orienté ?</li>
+              <li>Pas de conseiller disponible ?</li>
+              <li>Rappel ou relance bien programmés ?</li>
+            </ul>
           </div>
-          <div class="section-body">
-            <div class="summary-grid">
-              <article class="summary-card">
-                <div class="label">Volume</div>
-                <div class="value">926</div>
-                <div class="delta down">▼ -10,7%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">Traités</div>
-                <div class="value">850</div>
-                <div class="delta down">▼ -11,0%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">QS</div>
-                <div class="value">92%</div>
-                <div class="delta down">▼ -0,3%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">MER / RDV</div>
-                <div class="value">150</div>
-                <div class="delta down">▼ -22,7%</div>
-              </article>
-              <article class="summary-card wide">
-                <div class="label">Efficacité</div>
-                <div class="value">18%</div>
-                <div class="delta down">▼ -13,1%</div>
-              </article>
-            </div>
 
-            <div class="table-wrap" style="margin-top: 16px;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Pays</th>
-                    <th>Volume</th>
-                    <th>Traités</th>
-                    <th>QS</th>
-                    <th>MER / RDV</th>
-                    <th>Efficacité</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>France</strong></td>
-                    <td>452</td>
-                    <td>423</td>
-                    <td>93,6%</td>
-                    <td>72</td>
-                    <td>17,0%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Italie</strong></td>
-                    <td>267</td>
-                    <td>242</td>
-                    <td>90,6%</td>
-                    <td>32</td>
-                    <td>13,2%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Espagne</strong></td>
-                    <td>116</td>
-                    <td>105</td>
-                    <td>90,5%</td>
-                    <td>27</td>
-                    <td>25,7%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Portugal</strong></td>
-                    <td>61</td>
-                    <td>54</td>
-                    <td>88,5%</td>
-                    <td>16</td>
-                    <td>29,6%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Latino</strong></td>
-                    <td>18</td>
-                    <td>15</td>
-                    <td>83,3%</td>
-                    <td>1</td>
-                    <td>6,7%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Turquie</strong></td>
-                    <td>11</td>
-                    <td>10</td>
-                    <td>90,9%</td>
-                    <td>1</td>
-                    <td>10,0%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="card">
+            <h3>3.2 Client</h3>
+            <ul class="discussion-list">
+              <li>Part croissante d’appels informationnels ?</li>
+              <li>Cas de réassurance ou d’accompagnement hors MER ?</li>
+              <li>Faut-il automatiser certaines demandes simples ?</li>
+              <li>Suivi des cas sans mise en relation mais résolus ?</li>
+            </ul>
+          </div>
 
-            <div class="cards-3" style="margin-top: 16px;">
-              <article class="card">
-                <h3>Lecture activité</h3>
-                <p>
-                  Le volume Prospect baisse nettement sur avril et s’accompagne d’un recul encore plus fort sur
-                  les MER/RDV. La qualité de service reste correcte à <strong>92%</strong>, mais cela ne compense
-                  pas la diminution du rendement commercial.
-                </p>
-              </article>
-
-              <article class="card">
-                <h3>Points pays</h3>
-                <ul>
-                  <li><strong>France</strong> : plus gros volume, QS solide, mais efficacité encore en retrait.</li>
-                  <li><strong>Italie</strong> : poids important mais performance en dessous des attentes.</li>
-                  <li><strong>Espagne</strong> et <strong>Portugal</strong> : meilleurs niveaux d’efficacité.</li>
-                  <li><strong>Latino</strong> et <strong>Turquie</strong> : volumes faibles, donc sensibilité élevée.</li>
-                </ul>
-              </article>
-
-              <article class="card">
-                <h3>Axes d’action</h3>
-                <ul>
-                  <li>Identifier les causes de baisse de transformation sur les leads traités.</li>
-                  <li>Capitaliser sur les pratiques ES/PT.</li>
-                  <li>Réduire l’écart entre volume reçu et volume traité sur les pays majeurs.</li>
-                  <li>Suivre les pays en dessous des objectifs d’efficacité.</li>
-                </ul>
-              </article>
-            </div>
-
-            <div class="note" style="margin-top: 16px;">
-              Objectifs rappelés sur Prospect : ES/LAT 33%, IT 19%, FR 24%, PT 35%, TURQUIE 20%.
-              Avril reste en dessous sur l’ensemble des pays visibles.
-            </div>
+          <div class="card">
+            <h3>3.3 Recouvrement / Vigie</h3>
+            <ul class="discussion-list">
+              <li>Flux trop peu qualifiés ?</li>
+              <li>Base à nettoyer ou prioriser ?</li>
+              <li>Faible joignabilité ou faible propension à convertir ?</li>
+              <li>Quel canal alternatif tester ?</li>
+            </ul>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section class="panel" id="panel-client">
-        <div class="section">
-          <div class="section-head">
-            <div>
-              <h2>Client</h2>
-              <p>Activité principale du dispositif, avec maintien d’une forte qualité de service et d’un bon niveau d’efficacité globale.</p>
-            </div>
+      <div class="card">
+        <h2>4. Inflexions — Ce qui a changé ce mois</h2>
+        <table class="simple-table">
+          <thead>
+            <tr>
+              <th>Inflexion</th>
+              <th>Détail</th>
+              <th>Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Prospect en baisse</td>
+              <td>Volume, traités et MER/RDV reculent</td>
+              <td>Priorité commerciale du mois</td>
+            </tr>
+            <tr>
+              <td>Client reste solide</td>
+              <td>QS 98%, efficacité 61%</td>
+              <td>Socle d’activité sécurisé</td>
+            </tr>
+            <tr>
+              <td>Vigie progresse</td>
+              <td>Tous les indicateurs sont en légère hausse</td>
+              <td>Potentiel intéressant si mieux qualifié</td>
+            </tr>
+            <tr>
+              <td>Recouvrement grossit</td>
+              <td>Charge et traités en forte hausse</td>
+              <td>Mais sans résultat final</td>
+            </tr>
+            <tr>
+              <td>Tickets en rattrapage</td>
+              <td>Traités très supérieurs aux créés</td>
+              <td>Backlog probablement en baisse</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>5. Écoute — Signaux marché & besoins</h2>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>5.1 Ce que veulent les clients</h3>
+            <ul class="discussion-list">
+              <li>Réactivité et qualité de traitement côté Client.</li>
+              <li>Parcours simple et efficace côté Prospect.</li>
+              <li>Résolution claire et rapide côté support / tickets.</li>
+            </ul>
           </div>
-          <div class="section-body">
-            <div class="summary-grid">
-              <article class="summary-card">
-                <div class="label">Volume</div>
-                <div class="value">8 451</div>
-                <div class="delta down">▼ -2,1%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">Traités</div>
-                <div class="value">8 286</div>
-                <div class="delta down">▼ -2,4%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">QS</div>
-                <div class="value">98%</div>
-                <div class="delta down">▼ -0,3%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">MER / RDV</div>
-                <div class="value">5 024</div>
-                <div class="delta down">▼ -5,5%</div>
-              </article>
-              <article class="summary-card wide">
-                <div class="label">Efficacité</div>
-                <div class="value">61%</div>
-                <div class="delta down">▼ -3,2%</div>
-              </article>
-            </div>
 
-            <div class="table-wrap" style="margin-top: 16px;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Pays</th>
-                    <th>Volume</th>
-                    <th>Traités</th>
-                    <th>QS</th>
-                    <th>MER / RDV</th>
-                    <th>Efficacité</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Portugal</strong></td>
-                    <td>5 012</td>
-                    <td>4 956</td>
-                    <td>98,9%</td>
-                    <td>3 157</td>
-                    <td>63,7%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>France</strong></td>
-                    <td>1 207</td>
-                    <td>1 183</td>
-                    <td>98,0%</td>
-                    <td>630</td>
-                    <td>53,3%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Italie</strong></td>
-                    <td>763</td>
-                    <td>733</td>
-                    <td>96,1%</td>
-                    <td>390</td>
-                    <td>53,2%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Espagne</strong></td>
-                    <td>753</td>
-                    <td>725</td>
-                    <td>96,3%</td>
-                    <td>408</td>
-                    <td>56,3%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Turquie</strong></td>
-                    <td>360</td>
-                    <td>337</td>
-                    <td>93,6%</td>
-                    <td>209</td>
-                    <td>62,0%</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Latino</strong></td>
-                    <td>351</td>
-                    <td>347</td>
-                    <td>98,9%</td>
-                    <td>228</td>
-                    <td>65,7%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="cards-3" style="margin-top: 16px;">
-              <article class="card">
-                <h3>Points clés</h3>
-                <ul>
-                  <li>Activité globalement stable malgré un léger repli du volume.</li>
-                  <li>Excellente qualité de service, proche de l’excellence opérationnelle.</li>
-                  <li>Portugal reste très largement dominant dans la structure d’activité.</li>
-                  <li>Les MER/RDV baissent plus vite que le volume.</li>
-                </ul>
-              </article>
-
-              <article class="card">
-                <h3>Lecture pays</h3>
-                <ul>
-                  <li><strong>Portugal</strong> : locomotive du périmètre, performance solide.</li>
-                  <li><strong>France / Italie</strong> : efficacité autour de 53%, sous les objectifs rappelés.</li>
-                  <li><strong>Espagne</strong> : bonne tenue mais encore sous cible.</li>
-                  <li><strong>Latino</strong> : meilleure efficacité observée du tableau.</li>
-                </ul>
-              </article>
-
-              <article class="card">
-                <h3>Focus objectifs</h3>
-                <p>
-                  Objectifs Client rappelés : ES/LAT 53%, IT 50%, FR 57%, PT 63%, TURQ 60%.
-                  Avril montre une bonne tenue globale, avec plusieurs pays proches ou au-dessus,
-                  mais la France reste à consolider.
-                </p>
-              </article>
-            </div>
+          <div class="card">
+            <h3>5.2 Ce qu’ils ne veulent pas</h3>
+            <ul class="discussion-list">
+              <li>Attentes longues avant résolution.</li>
+              <li>Contacts non pertinents en Recouvrement ou Vigie.</li>
+              <li>Parcours qui n’aboutissent pas à une mise en relation utile.</li>
+            </ul>
           </div>
         </div>
-      </section>
 
-      <section class="panel" id="panel-vigie">
-        <div class="section">
-          <div class="section-head">
-            <div>
-              <h2>Vigie</h2>
-              <p>Remplacement de l’onglet HC par l’onglet Vigie pour avril 2026.</p>
-            </div>
+        <div class="grid2">
+          <div class="card">
+            <h3>5.3 Besoins de BestCall</h3>
+            <ul class="discussion-list">
+              <li>Réactiver la performance Prospect.</li>
+              <li>Mieux qualifier les flux faibles en conversion.</li>
+              <li>Réduire le délai moyen de résolution tickets.</li>
+            </ul>
           </div>
-          <div class="section-body">
-            <div class="summary-grid">
-              <article class="summary-card">
-                <div class="label">Volume</div>
-                <div class="value">2 740</div>
-                <div class="delta up">▲ +2,7%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">Traités</div>
-                <div class="value">1 110</div>
-                <div class="delta up">▲ +2,9%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">QS</div>
-                <div class="value">41%</div>
-                <div class="delta up">▲ +0,2%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">MER / RDV</div>
-                <div class="value">98</div>
-                <div class="delta up">▲ +7,7%</div>
-              </article>
-              <article class="summary-card wide">
-                <div class="label">Efficacité</div>
-                <div class="value">9%</div>
-                <div class="delta up">▲ +4,7%</div>
-              </article>
-            </div>
 
-            <div class="cards-2" style="margin-top: 16px;">
-              <article class="card">
-                <h3>Analyse</h3>
-                <p>
-                  La Vigie progresse sur tous les indicateurs suivis, ce qui est positif en tendance.
-                  Néanmoins, le niveau absolu de QS et d’efficacité reste faible. L’enjeu principal
-                  est donc moins la croissance du volume que l’amélioration de la pertinence des traitements
-                  et de la transformation.
-                </p>
-              </article>
-
-              <article class="card">
-                <h3>Recommandations</h3>
-                <ul>
-                  <li>Renforcer le tri amont et la qualification des contacts.</li>
-                  <li>Prioriser les dossiers à potentiel de conversion élevé.</li>
-                  <li>Analyser les causes des abandons entre traité et MER/RDV.</li>
-                  <li>Mettre en place un suivi fin des motifs de non-aboutissement.</li>
-                </ul>
-              </article>
-            </div>
-
-            <div class="note" style="margin-top: 16px;">
-              La tendance est favorable mais encore insuffisante : avec <strong>41%</strong> de QS et <strong>9%</strong>
-              d’efficacité, la Vigie reste un gisement d’optimisation prioritaire.
-            </div>
+          <div class="card">
+            <h3>5.4 Opportunités pour Wengo</h3>
+            <ul class="discussion-list">
+              <li>Renforcer les bassins rentables ES/PT en Prospect.</li>
+              <li>Capitaliser sur LAT/TR côté Client.</li>
+              <li>Repenser le mix Recouvrement entre ciblage et canal.</li>
+            </ul>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section class="panel" id="panel-recouv">
-        <div class="section">
-          <div class="section-head">
-            <div>
-              <h2>Recouvrement</h2>
-              <p>Activité en forte hausse sur les flux et les traités, mais sans amélioration finale de conversion.</p>
-            </div>
-          </div>
-          <div class="section-body">
-            <div class="summary-grid">
-              <article class="summary-card">
-                <div class="label">Volume</div>
-                <div class="value">9 670</div>
-                <div class="delta up">▲ +9,1%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">Traités</div>
-                <div class="value">3 097</div>
-                <div class="delta up">▲ +19,3%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">QS</div>
-                <div class="value">32%</div>
-                <div class="delta up">▲ +9,4%</div>
-              </article>
-              <article class="summary-card">
-                <div class="label">MER / RDV</div>
-                <div class="value">3</div>
-                <div class="delta down">▼ -25,0%</div>
-              </article>
-              <article class="summary-card wide">
-                <div class="label">Efficacité</div>
-                <div class="value">0%</div>
-                <div class="delta down">▼ -37,1%</div>
-              </article>
-            </div>
+      <div class="card">
+        <h2>6. Actions proposées pour Mai 2026</h2>
+        <table class="action-table simple-table">
+          <thead>
+            <tr>
+              <th>Prio</th>
+              <th>Action</th>
+              <th>Responsable</th>
+              <th>Échéance</th>
+              <th>KPI de suivi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>🔴 URGENT</td>
+              <td>Plan de relance conversion Prospect</td>
+              <td>BestCall + Wengo</td>
+              <td>Mai S1</td>
+              <td>MER/RDV Prospect, efficacité par pays</td>
+            </tr>
+            <tr>
+              <td>🔴 URGENT</td>
+              <td>Focus France Prospect et France Client</td>
+              <td>BestCall</td>
+              <td>Mai S1</td>
+              <td>Efficacité FR Prospect / Client</td>
+            </tr>
+            <tr>
+              <td>🟡 IMPORTANT</td>
+              <td>Qualifier les flux Vigie en amont</td>
+              <td>Wengo</td>
+              <td>Mai</td>
+              <td>QS Vigie, eff. Vigie</td>
+            </tr>
+            <tr>
+              <td>🟡 IMPORTANT</td>
+              <td>Revoir le modèle Recouvrement</td>
+              <td>Wengo + BestCall</td>
+              <td>Mai Copil</td>
+              <td>QS, MER, € recouvrés</td>
+            </tr>
+            <tr>
+              <td>🟡 IMPORTANT</td>
+              <td>Réduire le délai moyen Tickets</td>
+              <td>BestCall</td>
+              <td>Mai continu</td>
+              <td>Temps moyen de résolution</td>
+            </tr>
+            <tr>
+              <td>🟢 SUIVI</td>
+              <td>Maintenir l’excellence Portugal Client</td>
+              <td>BestCall</td>
+              <td>Continu</td>
+              <td>QS PT, efficacité PT</td>
+            </tr>
+            <tr>
+              <td>🟢 SUIVI</td>
+              <td>Capitaliser sur ES / PT en Prospect</td>
+              <td>BestCall</td>
+              <td>Continu</td>
+              <td>Efficacité ES/PT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-            <div class="cards-3" style="margin-top: 16px;">
-              <article class="card">
-                <h3>Constat</h3>
-                <p>
-                  Le Recouvrement absorbe davantage de charge et améliore son QS, mais la finalité métier n’est
-                  pas au rendez-vous. La hausse des volumes ne génère pas de résultat proportionnel.
-                </p>
-              </article>
+      <div class="card">
+        <h2>7. Format de séance proposé</h2>
+        <table class="simple-table">
+          <thead>
+            <tr>
+              <th>Durée</th>
+              <th>Bloc</th>
+              <th>Contenu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>5 min</td><td>Intro</td><td>Rappel des objectifs et contexte d’avril</td></tr>
+            <tr><td>10 min</td><td>Bilan actions M-1</td><td>Statut des actions précédentes</td></tr>
+            <tr><td>15 min</td><td>Performance Prospect</td><td>Volumes, efficacité, focus pays</td></tr>
+            <tr><td>10 min</td><td>Performance Client</td><td>QS, objectifs, focus France</td></tr>
+            <tr><td>10 min</td><td>Vigie</td><td>Qualité de ciblage et récupération</td></tr>
+            <tr><td>10 min</td><td>Recouvrement</td><td>Clics, € recouvrés, modèle à arbitrer</td></tr>
+            <tr><td>5 min</td><td>Tickets</td><td>Backlog, délai de résolution</td></tr>
+            <tr><td>10 min</td><td>Inflexions & Signaux</td><td>Ce qui change, besoins, opportunités</td></tr>
+            <tr><td>10 min</td><td>Actions Mai</td><td>Valider, assigner, planifier</td></tr>
+          </tbody>
+        </table>
 
-              <article class="card">
-                <h3>Signal d’alerte</h3>
-                <p>
-                  Le nombre de MER/RDV est extrêmement faible au regard du volume total. L’efficacité globale
-                  à <strong>0%</strong> confirme un besoin de revue profonde du dispositif ou des critères d’entrée.
-                </p>
-              </article>
-
-              <article class="card">
-                <h3>Pistes de travail</h3>
-                <ul>
-                  <li>Segmenter les dossiers par probabilité de récupération.</li>
-                  <li>Revoir le cadencement des relances.</li>
-                  <li>Analyser la qualité des bases et la joignabilité.</li>
-                  <li>Mesurer précisément les motifs d’échec de conversion.</li>
-                </ul>
-              </article>
-            </div>
-
-            <div class="section" style="margin: 16px 0 0; box-shadow:none;">
-              <div class="section-head">
-                <div>
-                  <h2 style="font-size:20px;">Focus Clics</h2>
-                  <p>Indicateurs complémentaires visibles sur avril.</p>
-                </div>
-              </div>
-              <div class="section-body">
-                <div class="cards-4">
-                  <article class="card">
-                    <h3>Volume Clics</h3>
-                    <div class="value" style="font-size:30px; font-weight:800; color:var(--primary);">1 524</div>
-                    <div class="delta down">▼ -23,9%</div>
-                  </article>
-                  <article class="card">
-                    <h3>Tentatives OK</h3>
-                    <div class="value" style="font-size:30px; font-weight:800; color:var(--primary);">899</div>
-                    <div class="delta down">▼ -7,6%</div>
-                  </article>
-                  <article class="card">
-                    <h3>% OK</h3>
-                    <div class="value" style="font-size:30px; font-weight:800; color:var(--primary);">59%</div>
-                    <div class="delta up">▲ +21,4%</div>
-                  </article>
-                  <article class="card">
-                    <h3>Montant recouvré</h3>
-                    <div class="value" style="font-size:30px; font-weight:800; color:var(--primary);">33 773 €</div>
-                    <div class="delta down">▼ -1,6%</div>
-                  </article>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="success">
+          <strong>Durée estimée :</strong> environ 85 minutes.
         </div>
-      </section>
-
-      <section class="panel" id="panel-tickets">
-        <div class="section">
-          <div class="section-head">
-            <div>
-              <h2>Tickets</h2>
-              <p>Suivi du flux tickets et de la capacité de traitement sur avril 2026.</p>
-            </div>
-          </div>
-          <div class="section-body">
-            <div class="cards-4">
-              <article class="card">
-                <h3>Tickets créés</h3>
-                <div class="value" style="font-size:34px; font-weight:800; color:var(--primary);">552</div>
-              </article>
-              <article class="card">
-                <h3>Tickets traités</h3>
-                <div class="value" style="font-size:34px; font-weight:800; color:var(--primary);">1 054</div>
-              </article>
-              <article class="card">
-                <h3>Tickets clôturés</h3>
-                <div class="value" style="font-size:34px; font-weight:800; color:var(--primary);">332</div>
-              </article>
-              <article class="card">
-                <h3>Tickets fermés</h3>
-                <div class="value" style="font-size:34px; font-weight:800; color:var(--primary);">717</div>
-              </article>
-            </div>
-
-            <div class="cards-2" style="margin-top: 16px;">
-              <article class="card">
-                <h3>Temps moyen de résolution</h3>
-                <div class="value" style="font-size:42px; font-weight:800; color:var(--primary); line-height:1;">60,9h</div>
-                <p style="margin-top:12px;">
-                  Le volume traité dépasse largement les tickets créés, ce qui indique une dynamique de réduction
-                  du stock ou de rattrapage. Le délai moyen reste toutefois un point à surveiller.
-                </p>
-              </article>
-
-              <article class="card">
-                <h3>Lecture opérationnelle</h3>
-                <ul>
-                  <li>Bonne absorption du flux entrant.</li>
-                  <li>Fermetures nombreuses, signal d’une production active.</li>
-                  <li>Clôtures plus faibles que les tickets fermés : à harmoniser si nécessaire selon vos définitions internes.</li>
-                  <li>Priorité : continuer la décrue du stock tout en réduisant le délai moyen.</li>
-                </ul>
-              </article>
-            </div>
-
-            <div class="note" style="margin-top: 16px;">
-              Le flux Tickets est plutôt rassurant sur la capacité de production. Le prochain levier de performance
-              porte surtout sur la rapidité de résolution et la stabilité du process de fermeture.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel" id="panel-discussion">
-        <div class="section">
-          <div class="section-head">
-            <div>
-              <h2>Discussion</h2>
-              <p>Zone de synthèse qualitative du mois, dans le même esprit que mars.</p>
-            </div>
-          </div>
-          <div class="section-body">
-            <div class="discussion-grid">
-              <article class="card">
-                <h3>Sujets à partager en comité</h3>
-                <ul>
-                  <li>Comprendre la baisse Prospect malgré une QS encore correcte.</li>
-                  <li>Qualifier la légère érosion Client sur les MER/RDV.</li>
-                  <li>Décider d’un plan d’amélioration ciblé pour la Vigie.</li>
-                  <li>Réinterroger le modèle Recouvrement au vu d’une efficacité nulle.</li>
-                  <li>Confirmer la trajectoire de réduction du backlog Tickets.</li>
-                </ul>
-              </article>
-
-              <article class="card">
-                <h3>Messages clés</h3>
-                <ul>
-                  <li>Le socle opérationnel tient, mais la performance commerciale doit être relancée.</li>
-                  <li>Les écarts pays Prospect restent importants par rapport aux objectifs.</li>
-                  <li>Le portefeuille Client demeure stable et bien maîtrisé.</li>
-                  <li>Les activités annexes progressent en charge, pas encore en impact.</li>
-                </ul>
-              </article>
-            </div>
-
-            <div class="cards-2" style="margin-top: 16px;">
-              <article class="card">
-                <h3>Décisions / actions proposées</h3>
-                <ul>
-                  <li>Plan flash sur la conversion Prospect par pays.</li>
-                  <li>Benchmark des meilleures pratiques ES / PT à diffuser.</li>
-                  <li>Audit court sur les flux Vigie et Recouvrement.</li>
-                  <li>Suivi hebdomadaire du délai Tickets jusqu’à retour sous cible.</li>
-                </ul>
-              </article>
-
-              <article class="card">
-                <h3>Commentaires libres</h3>
-                <p>
-                  Cette section est laissée en version statique pour rester cohérente avec votre choix actuel
-                  sans backend. Si tu veux, je peux ensuite te faire une version “Discussion” enrichie
-                  exactement dans le même format que mars avec tes éléments métier finaux.
-                </p>
-              </article>
-            </div>
-
-            <div class="pill-list" style="margin-top: 16px;">
-              <span class="pill">Prospect en baisse</span>
-              <span class="pill">Client solide</span>
-              <span class="pill">Vigie à renforcer</span>
-              <span class="pill">Recouvrement à revoir</span>
-              <span class="pill">Tickets en rattrapage</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <div class="footer-note">
-      Dashboard Avril 2026 — BestCall x Wengo
-    </div>
+      </div>
+    </section>
   </div>
 
   <script>
-    const STORAGE_KEY = "dashboard-2026-04:tab";
-    const tabButtons = document.querySelectorAll(".tab-btn");
-    const panels = document.querySelectorAll(".panel");
+    (() => {
+      const STORAGE_KEY = "dashboard-2026-04:tab";
+      const buttons = Array.from(document.querySelectorAll("nav button[data-t]"));
+      const tabs = Array.from(document.querySelectorAll(".tab"));
 
-    function activateTab(tabId) {
-      tabButtons.forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.tab === tabId);
+      function activateTab(tabId) {
+        buttons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.t === tabId);
+        });
+
+        tabs.forEach((tab) => {
+          tab.classList.toggle("active", tab.id === tabId);
+        });
+
+        localStorage.setItem(STORAGE_KEY, tabId);
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          activateTab(button.dataset.t);
+        });
       });
 
-      panels.forEach((panel) => {
-        panel.classList.toggle("active", panel.id === `panel-${tabId}`);
-      });
+      const savedTab = localStorage.getItem(STORAGE_KEY);
+      const hasSavedTab = savedTab && tabs.some((tab) => tab.id === savedTab);
 
-      localStorage.setItem(STORAGE_KEY, tabId);
-    }
-
-    tabButtons.forEach((btn) => {
-      btn.addEventListener("click", () => activateTab(btn.dataset.tab));
-    });
-
-    const savedTab = localStorage.getItem(STORAGE_KEY);
-    const defaultTab = savedTab && document.querySelector(`.tab-btn[data-tab="${savedTab}"]`)
-      ? savedTab
-      : "copil";
-
-    activateTab(defaultTab);
+      activateTab(hasSavedTab ? savedTab : "copil");
+    })();
   </script>
 </body>
 </html>
