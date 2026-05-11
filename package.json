@@ -1,0 +1,8 @@
+{
+    "name": "projet_1",
+    "version": "1.0.0",
+    "description": "Projet dashboards",
+    "scripts": {
+      "start": "npx live-server public --port=3000 --host=0.0.0.0"
+    }
+  }
