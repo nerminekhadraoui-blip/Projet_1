@@ -1,7 +1,20 @@
 {
-  "dashboards": [
-    { "id": "2026-03", "label": "Mars 2026", "file": "./dashboards/2026-03.html" },
-    { "id": "2026-04-mi", "label": "Avril 2026 (mi-mois)", "file": "./dashboards/2026-04-mi.html" },
-    { "id": "2026-04", "label": "Avril 2026", "file": "./dashboards/2026-04.html" }
-  ]
+  "services": {
+    "client": {
+      "label": "Service Client",
+      "description": "Suivi opérationnel des flux Prospect, Client, Vigie, Recouvrement et Tickets",
+      "icon": "👥",
+      "dashboards": [
+        { "id": "2026-03",    "label": "Mars 2026",            "file": "./dashboards/client/2026-03.html" },
+        { "id": "2026-04-mi", "label": "Avril 2026 (mi-mois)", "file": "./dashboards/client/2026-04-mi.html" },
+        { "id": "2026-04",    "label": "Avril 2026",           "file": "./dashboards/client/2026-04.html" }
+      ]
+    },
+    "expert": {
+      "label": "Service Expert",
+      "description": "Suivi opérationnel des experts et de leur activité",
+      "icon": "🎓",
+      "dashboards": []
+    }
+  }
 }

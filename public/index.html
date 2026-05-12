@@ -1,142 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboards — BestCall x Wengo</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BestCall x Wengo — Tableaux de bord</title>
+  <link rel="stylesheet" href="./style.css" />
 </head>
-<body>
-  <div class="app-shell" id="appShell">
-    <aside class="sidebar">
-      <div class="brand">
-        <img
-          src="images/bestcall-wengo.png"
-          alt="BestCall x Wengo"
-          class="brand-logo"
-        />
-      </div>
-
-      <div class="sidebar-section">
-        <div class="sidebar-title">Dashboards</div>
-        <nav id="menu" class="menu"></nav>
-      </div>
-
-      <div class="sidebar-footer">
-        <button
-          id="createDashboard"
-          class="btn btn-primary btn-keep-visible is-disabled"
-          type="button"
-          aria-disabled="true"
-          title="Bientôt disponible"
-        >
-          <span class="btn-icon">+</span>
-          <span class="btn-label">Créer un nouveau dashboard</span>
-        </button>
-      </div>
-    </aside>
-
-    <main class="main">
-    <header class="topbar">
-      <div class="topbar-left">
-        <button
-          id="toggleSidebar"
-          class="icon-btn toggle-btn"
-          type="button"
-          aria-label="Ouvrir ou fermer la sidebar"
-          title="Ouvrir ou fermer la sidebar"
-        >
-          <span class="toggle-layout-icon" aria-hidden="true">
-            <span class="toggle-layout-panel"></span>
-            <span class="toggle-layout-content"></span>
-          </span>
-        </button>
-    
-        <div class="topbar-texts">
-          <div class="page-kicker">Dashboard</div>
-          <div id="currentLabel" class="currentLabel">—</div>
-        </div>
-      </div>
-    
-      <div class="topbar-right">
-        <button id="openObjectives" class="btn btn-secondary" type="button">
-          <span class="btn-icon btn-icon-dark">📋</span>
-          <span>Objectifs</span>
-        </button>
-      </div>
+<body class="landing-body">
+  <main class="landing">
+    <header class="landing-header">
+      <img src="./images/bestcall-wengo.png" alt="BestCall x Wengo" class="landing-logo" />
+      <h1>Tableaux de bord opérationnels</h1>
+      <p class="landing-subtitle">Choisissez le service à consulter</p>
     </header>
 
-      <section class="content">
-        <div class="content-card">
-          <iframe
-            id="frame"
-            class="frame"
-            src=""
-            title="Dashboard"
-          ></iframe>
-        </div>
-      </section>
-    </main>
-  </div>
+    <section class="landing-services" id="services-grid">
+      <!-- Cartes injectées par JS -->
+    </section>
 
-  <div id="objectivesModal" class="modal hidden" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal="true"></div>
+    <footer class="landing-footer">
+      <small>BestCall x Wengo · Suivi opérationnel</small>
+    </footer>
+  </main>
 
-    <div
-      class="modal-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="objectivesTitle"
-    >
-      <div class="modal-header">
-        <div>
-          <div class="modal-kicker">Rappel</div>
-          <h2 id="objectivesTitle" class="modal-title">Objectifs à atteindre</h2>
-        </div>
+  <script>
+    (async function () {
+      const grid = document.getElementById('services-grid');
+      try {
+        const res = await fetch('./dashboards/manifest.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Manifest introuvable (' + res.status + ')');
+        const data = await res.json();
+        const services = data.services || {};
 
-        <button
-          id="closeObjectives"
-          class="modal-close"
-          type="button"
-          aria-label="Fermer la popup"
-        >
-          ✕
-        </button>
-      </div>
+        const entries = Object.entries(services);
+        if (entries.length === 0) {
+          grid.innerHTML = '<p class="landing-empty">Aucun service disponible.</p>';
+          return;
+        }
 
-      <div class="modal-body">
-        <div class="objectives-grid">
-          <div class="objective-card">
-            <h3>Prospect</h3>
-            <ul class="objective-list">
-              <li><span>ES / LAT</span><strong>33%</strong></li>
-              <li><span>IT</span><strong>19%</strong></li>
-              <li><span>FR</span><strong>24%</strong></li>
-              <li><span>PT</span><strong>35%</strong></li>
-              <li><span>TURQ</span><strong>20%</strong></li>
-            </ul>
-          </div>
-
-          <div class="objective-card">
-            <h3>Client</h3>
-            <ul class="objective-list">
-              <li><span>ES / LAT</span><strong>53%</strong></li>
-              <li><span>IT</span><strong>50%</strong></li>
-              <li><span>FR</span><strong>57%</strong></li>
-              <li><span>PT</span><strong>63%</strong></li>
-              <li><span>TURQ</span><strong>60%</strong></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="objective-note">
-          Utilise cette popup comme mémo pour vérifier rapidement si les performances
-          du dashboard ont atteint les objectifs attendus.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
+        grid.innerHTML = entries.map(([key, svc]) => {
+          const count = Array.isArray(svc.dashboards) ? svc.dashboards.length : 0;
+          const countLabel = count === 0
+            ? 'Aucun tableau de bord pour le moment'
+            : (count + ' tableau' + (count > 1 ? 'x' : '') + ' de bord');
+          return `
+            <a class="service-card" href="./app.html?service=${encodeURIComponent(key)}">
+              <div class="service-card-icon">${svc.icon || '📊'}</div>
+              <div class="service-card-body">
+                <h2>${svc.label || key}</h2>
+                <p>${svc.description || ''}</p>
+                <span class="service-card-count">${countLabel}</span>
+              </div>
+              <div class="service-card-arrow">→</div>
+            </a>
+          `;
+        }).join('');
+      } catch (e) {
+        grid.innerHTML = '<p class="landing-error">Erreur de chargement : ' + e.message + '</p>';
+        console.error(e);
+      }
+    })();
+  </script>
 </body>
 </html>

@@ -2,6 +2,8 @@ const appShell = document.getElementById("appShell");
 const menu = document.getElementById("menu");
 const frame = document.getElementById("frame");
 const currentLabel = document.getElementById("currentLabel");
+const pageKicker = document.getElementById("pageKicker");
+const serviceTitle = document.getElementById("serviceTitle");
 const createDashboard = document.getElementById("createDashboard");
 const toggleSidebar = document.getElementById("toggleSidebar");
 
@@ -11,6 +13,10 @@ const objectivesModal = document.getElementById("objectivesModal");
 
 let dashboards = [];
 let current = null;
+let serviceKey = null;
+let serviceInfo = null;
+
+/* ---------- SIDEBAR ---------- */
 
 function setSidebarCollapsed(collapsed) {
   if (!appShell) return;
@@ -23,6 +29,8 @@ function updateActiveMenuItem(id) {
     item.classList.toggle("active", item.dataset.id === id);
   });
 }
+
+/* ---------- DASHBOARDS ---------- */
 
 function setActive(id, updateHash = true) {
   current = dashboards.find((d) => d.id === id) || dashboards[0];
@@ -37,7 +45,7 @@ function setActive(id, updateHash = true) {
   currentLabel.textContent = current.label;
   updateActiveMenuItem(current.id);
 
-  localStorage.setItem("dashboard:selected", current.id);
+  localStorage.setItem(`dashboard:selected:${serviceKey}`, current.id);
 
   if (updateHash && location.hash.replace("#", "") !== current.id) {
     history.replaceState(null, "", `#${current.id}`);
@@ -46,6 +54,11 @@ function setActive(id, updateHash = true) {
 
 function buildMenu() {
   menu.innerHTML = "";
+
+  if (!dashboards.length) {
+    menu.innerHTML = `<div class="menu-error">Aucun tableau de bord pour le moment.</div>`;
+    return;
+  }
 
   dashboards.forEach((dashboard) => {
     const link = document.createElement("a");
@@ -63,6 +76,8 @@ function buildMenu() {
   });
 }
 
+/* ---------- MODAL OBJECTIFS ---------- */
+
 function openObjectivesModal() {
   if (!objectivesModal) return;
   objectivesModal.classList.remove("hidden");
@@ -77,9 +92,10 @@ function closeObjectivesModal() {
   document.body.style.overflow = "";
 }
 
+/* ---------- EVENTS ---------- */
+
 function bindEvents() {
   createDashboard?.addEventListener("click", (event) => {
-    // Visible mais volontairement non fonctionnel (future feature)
     event.preventDefault();
     event.stopPropagation();
   });
@@ -89,17 +105,11 @@ function bindEvents() {
     setSidebarCollapsed(!isCollapsed);
   });
 
-  openObjectives?.addEventListener("click", () => {
-    openObjectivesModal();
-  });
-
-  closeObjectives?.addEventListener("click", () => {
-    closeObjectivesModal();
-  });
+  openObjectives?.addEventListener("click", () => openObjectivesModal());
+  closeObjectives?.addEventListener("click", () => closeObjectivesModal());
 
   objectivesModal?.addEventListener("click", (event) => {
-    const shouldClose = event.target.closest("[data-close-modal='true']");
-    if (shouldClose) {
+    if (event.target.closest("[data-close-modal='true']")) {
       closeObjectivesModal();
     }
   });
@@ -112,51 +122,90 @@ function bindEvents() {
 
   window.addEventListener("hashchange", () => {
     const id = location.hash.replace("#", "");
-    if (id) {
-      setActive(id, false);
-    }
+    if (id) setActive(id, false);
   });
 }
 
+/* ---------- MANIFEST ---------- */
+
 async function loadManifest() {
   const response = await fetch("./dashboards/manifest.json", { cache: "no-store" });
-
   if (!response.ok) {
     throw new Error(`Impossible de charger le manifest (${response.status})`);
   }
-
-  const data = await response.json();
-  return data.dashboards || [];
+  return response.json();
 }
+
+/* ---------- SERVICE ---------- */
+
+function getServiceKey() {
+  const params = new URLSearchParams(location.search);
+  return params.get("service");
+}
+
+function applyServiceUI() {
+  if (!serviceInfo) return;
+
+  // Titre de section dans la sidebar : icône + nom du service
+  if (serviceTitle) {
+    const icon = serviceInfo.icon || "📊";
+    const label = serviceInfo.label || "Service";
+    serviceTitle.textContent = `${icon}  ${label}`;
+  }
+
+  // Kicker dans la topbar
+  if (pageKicker) pageKicker.textContent = (serviceInfo.label || "Dashboard").toUpperCase();
+
+  // Titre de l'onglet
+  document.title = `${serviceInfo.label} — Dashboards BestCall x Wengo`;
+}
+
+/* ---------- INIT ---------- */
 
 function getInitialDashboardId() {
   const fromHash = location.hash ? location.hash.replace("#", "") : null;
-  const fromStorage = localStorage.getItem("dashboard:selected");
+  const fromStorage = localStorage.getItem(`dashboard:selected:${serviceKey}`);
   const fallback = dashboards[0]?.id || null;
-
   return fromHash || fromStorage || fallback;
 }
 
 function restoreSidebarState() {
-  const savedSidebarState = localStorage.getItem("sidebar:collapsed");
-  if (savedSidebarState === "true") {
-    setSidebarCollapsed(true);
-  }
+  const saved = localStorage.getItem("sidebar:collapsed");
+  if (saved === "true") setSidebarCollapsed(true);
 }
 
 async function init() {
   try {
-    dashboards = await loadManifest();
+    serviceKey = getServiceKey();
 
-    if (!dashboards.length) {
-      currentLabel.textContent = "Aucun dashboard disponible";
-      menu.innerHTML = `<div class="menu-error">Aucun dashboard trouvé dans le manifest.</div>`;
+    // Pas de service dans l'URL → on retourne à la landing
+    if (!serviceKey) {
+      window.location.replace("index.html");
       return;
     }
+
+    const manifest = await loadManifest();
+    const services = manifest.services || {};
+    serviceInfo = services[serviceKey];
+
+    // Service inconnu → on retourne à la landing
+    if (!serviceInfo) {
+      window.location.replace("index.html");
+      return;
+    }
+
+    applyServiceUI();
+    dashboards = serviceInfo.dashboards || [];
 
     buildMenu();
     bindEvents();
     restoreSidebarState();
+
+    if (!dashboards.length) {
+      currentLabel.textContent = "Aucun dashboard disponible";
+      frame.removeAttribute("src");
+      return;
+    }
 
     const startId = getInitialDashboardId();
     setActive(startId);
