@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Opérationnel — Service Expert — Avril 2026</title>
+  <style>
+    :root {
+      --brand-dark: #2B4455;
+      --brand-accent: #C68779;
+      --brand-muted: #707E88;
+      --white: #FFFFFF;
+
+      --bg: #f3f6f8;
+      --bg-soft: #f8fafc;
+      --line: #e2e8f0;
+      --line-soft: #edf2f7;
+      --text: #1e293b;
+      --text-soft: #475569;
+
+      --success: #16a34a;
+      --danger: #dc2626;
+      --info: #3b82f6;
+      --warning: #eab308;
+
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+      --shadow-md: 0 10px 30px rgba(43, 68, 85, 0.08);
+
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(198, 135, 121, 0.10), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(43, 68, 85, 0.08), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, #37576b 60%, var(--brand-accent) 100%);
+      color: var(--white);
+      padding: 24px 32px;
+      box-shadow: 0 12px 24px rgba(43, 68, 85, 0.16);
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    header .sub {
+      font-size: 12px;
+      opacity: 0.82;
+      margin-top: 6px;
+    }
+
+    nav {
+      display: flex;
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--line);
+      padding: 0 12px;
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+
+    nav button {
+      padding: 12px 16px;
+      border: none;
+      background: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--brand-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: 0.18s ease;
+    }
+
+    nav button:hover {
+      color: var(--brand-accent);
+    }
+
+    nav button.active {
+      color: var(--brand-dark);
+      border-bottom-color: var(--brand-accent);
+    }
+
+    .tab {
+      display: none;
+      padding: 20px;
+      max-width: 1480px;
+      margin: 0 auto;
+    }
+
+    .tab.active {
+      display: block;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 18px 20px;
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      font-size: 15px;
+      margin-bottom: 10px;
+      color: var(--brand-dark);
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 7px;
+    }
+
+    .card h3 {
+      font-size: 13px;
+      margin: 14px 0 8px;
+      color: var(--text-soft);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      margin-bottom: 6px;
+    }
+
+    thead th {
+      background: var(--bg-soft);
+      font-weight: 600;
+      text-align: right;
+      padding: 7px 8px;
+      border-bottom: 2px solid var(--line);
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    thead th:first-child {
+      text-align: left;
+    }
+
+    td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--line-soft);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    td:first-child {
+      text-align: left;
+      font-weight: 500;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .simple-table td,
+    .simple-table th {
+      white-space: normal;
+      vertical-align: top;
+    }
+
+    .up {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .dn {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .neutral {
+      color: var(--text-soft);
+      font-weight: 600;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 1100px) {
+      .grid3 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .grid2,
+      .grid3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .kpi-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .kpi {
+      flex: 1;
+      min-width: 130px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .kpi .v {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--brand-dark);
+    }
+
+    .kpi .l {
+      font-size: 10px;
+      color: var(--brand-muted);
+      margin-top: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .kpi .d {
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .comment {
+      background: #eff6ff;
+      border-left: 4px solid var(--info);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-size: 11.5px;
+      line-height: 1.55;
+      color: #1e40af;
+    }
+
+    .comment strong {
+      color: var(--brand-dark);
+    }
+
+    .alert {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-size: 11.5px;
+      line-height: 1.55;
+      color: #991b1b;
+    }
+
+    .success {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-size: 11.5px;
+      line-height: 1.55;
+      color: #166534;
+    }
+
+    .copil-block {
+      background: #fefce8;
+      border-left: 4px solid var(--warning);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin: 10px 0;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #854d0e;
+    }
+
+    .copil-block ul,
+    .discussion-list {
+      margin: 6px 0 0 18px;
+    }
+
+    .copil-block li,
+    .discussion-list li {
+      margin-bottom: 4px;
+    }
+
+    .note {
+      font-size: 10.5px;
+      color: #94a3b8;
+      font-style: italic;
+      margin: 4px 0 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .badge-g {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-r {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .badge-y {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(43, 68, 85, 0.08);
+      color: var(--brand-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .discussion-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .discussion-kicker {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(43, 68, 85, 0.08);
+      color: var(--brand-dark);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 900px) {
+      .discussion-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 18px;
+      }
+
+      header h1 {
+        font-size: 18px;
+      }
+
+      .tab {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 14px;
+      }
+
+      nav button {
+        padding: 11px 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>📊 Dashboard Opérationnel — Service Expert — Avril 2026</h1>
+    <div class="sub">Appels entrants · Appels sortants · Tickets · Focus pays · Occupation conseillers · Actions COPIL</div>
+  </header>
+
+  <nav>
+    <button class="active" data-t="copil">🎯 Copil</button>
+    <button data-t="overview">Vue d'ensemble</button>
+    <button data-t="entrants">Entrants</button>
+    <button data-t="sortants">Sortants</button>
+    <button data-t="tickets">Tickets</button>
+    <button data-t="focus">Focus pays</button>
+    <button data-t="occupation">Occupation</button>
+    <button data-t="discussion">Discussion</button>
+  </nav>
+
+  <!-- ========== COPIL ========== -->
+  <section id="copil" class="tab active">
+    <div class="card">
+      <h2>🎯 Synthèse Copil — Service Expert — Avril 2026</h2>
+
+      <div class="copil-block">
+        <strong>1. Activité Expert — Mois très orienté pilotage commercial et support complexe</strong>
+        <ul>
+          <li>📞 <strong>Entrants : 255 appels</strong>, en léger retrait de <strong>-5,6%</strong>, avec une QoS solide à <strong>95,3%</strong>.</li>
+          <li>📤 <strong>Sortants : 306 appels</strong>, en hausse de <strong>+11,3%</strong>, mais avec une QoS faible à <strong>57,8%</strong>.</li>
+          <li>🎫 <strong>Tickets Expert : 509 créés / 589 traités</strong> : bonne absorption du flux, mais délai moyen très élevé à <strong>100,6h</strong>.</li>
+          <li>Le mois est dominé par la pédagogie tarifaire, les irritants techniques, les actions commerciales et la réassurance des experts.</li>
+        </ul>
+      </div>
+
+      <div class="copil-block">
+        <strong>2. 🔴 Alertes business prioritaires</strong>
+        <ul>
+          <li><strong>Sortants : QoS seulement 57,8%</strong> malgré la hausse de volume → la qualité des échanges sortants reste fragile.</li>
+          <li><strong>Délai tickets : 100,6h</strong> en moyenne → risque fort sur l’expérience expert et la confiance dans le support.</li>
+          <li><strong>Bugs techniques transversaux</strong> : téléphone, chat, affichage, appels coupés, notifications, gains/statistiques affichés.</li>
+          <li><strong>Modèle économique mal compris</strong> : Wengo Light, frais techniques de 200€, seuils, commissions et compensation restent des irritants majeurs.</li>
+          <li><strong>Appels longs / digressions</strong> : très utiles relationnellement, mais parfois trop peu cadrés opérationnellement.</li>
+        </ul>
+      </div>
+
+      <div class="copil-block">
+        <strong>3. 🟢 Points positifs / leviers à consolider</strong>
+        <ul>
+          <li><strong>Entrants bien maîtrisés</strong> : QoS à 95,3%, QoS redressée à 99,6%, DMC en baisse à 6:20.</li>
+          <li><strong>Portugal Top</strong> ressort comme le modèle commercial le plus abouti : objectifs, paliers, promos datées, lives, contenus, fidélisation.</li>
+          <li><strong>Coaching individualisé</strong> efficace quand il se termine par un objectif clair et une action datée.</li>
+          <li><strong>Italie</strong> reste structurée sur l’onboarding et la pédagogie, avec un fort potentiel d’industrialisation en supports/process.</li>
+          <li><strong>Tickets traités supérieurs aux tickets créés</strong> : 589 traités vs 509 créés → capacité d’absorption présente.</li>
+        </ul>
+      </div>
+
+      <div class="copil-block">
+        <strong>4. 🎯 Enjeux business clés du moment</strong>
+        <ul>
+          <li>Industrialiser le coaching Expert : objectif → levier → action → responsable → date → KPI.</li>
+          <li>Créer un guide financier ultra simple pour réduire les incompréhensions sur les frais, seuils et commissions.</li>
+          <li>Mettre en place une vraie boucle incident : preuve → ticket → SLA → retour expert.</li>
+          <li>Encadrer les appels longs pour distinguer les appels à forte valeur des échanges relationnels non productifs.</li>
+          <li>Capitaliser sur le modèle Portugal et le transformer en playbook réutilisable pour FR / ES / IT.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h2>🔑 Actions Copil proposées</h2>
+        <table class="simple-table">
+          <thead>
+            <tr>
+              <th>Priorité</th>
+              <th>Action</th>
+              <th>Périmètre</th>
+              <th>Responsable</th>
+              <th>Échéance</th>
+              <th>KPI de succès</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-r">URGENT</span></td>
+              <td>Créer une procédure bugs techniques commune</td>
+              <td>Tel / chat / web / paiement</td>
+              <td>Wengo + BestCall</td>
+              <td>Mai S1</td>
+              <td>↓ recontacts tech, ↓ tickets bugs, ↑ confiance expert</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-r">URGENT</span></td>
+              <td>Réduire le délai moyen tickets Expert</td>
+              <td>Tickets Expert</td>
+              <td>BestCall</td>
+              <td>Mai</td>
+              <td>Temps moyen &lt; 72h puis &lt; 48h</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-y">IMPORTANT</span></td>
+              <td>Créer un guide financier Expert ultra simple</td>
+              <td>Light / frais / seuils / commissions</td>
+              <td>Wengo</td>
+              <td>Mai S2</td>
+              <td>↓ appels sur frais, ↓ incompréhension, ↓ churn Flop</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-y">IMPORTANT</span></td>
+              <td>Installer une checklist obligatoire de fin d’appel</td>
+              <td>Entrants / Sortants</td>
+              <td>BestCall</td>
+              <td>Mai</td>
+              <td>% appels avec action + date + responsable</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-y">IMPORTANT</span></td>
+              <td>Encadrer les appels longs par type de motif</td>
+              <td>Coaching / Support / Onboarding</td>
+              <td>BestCall</td>
+              <td>Mai</td>
+              <td>↓ DMC, ↑ QoS sortants</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-g">SUIVI</span></td>
+              <td>Capitaliser sur le modèle Portugal</td>
+              <td>PT → FR / ES / IT</td>
+              <td>Wengo + BestCall</td>
+              <td>Continu</td>
+              <td>Playbook coaching + adoption pays</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-g">SUIVI</span></td>
+              <td>Industrialiser l’onboarding Italie</td>
+              <td>Italie Top / nouveaux experts</td>
+              <td>Wengo + Gabriela / Luisa</td>
+              <td>Mai-Juin</td>
+              <td>↓ durée onboarding, ↑ homogénéité discours</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OVERVIEW ========== -->
+  <section id="overview" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">255</div><div class="l">Appels entrants</div><div class="d dn">-5,6%</div></div>
+      <div class="kpi"><div class="v">95,3%</div><div class="l">QoS entrants</div><div class="d up">+0,1 pt</div></div>
+      <div class="kpi"><div class="v">306</div><div class="l">Appels sortants</div><div class="d up">+11,3%</div></div>
+      <div class="kpi"><div class="v">57,8%</div><div class="l">QoS sortants</div><div class="d up">+1,3 pt</div></div>
+      <div class="kpi"><div class="v">509</div><div class="l">Tickets créés</div></div>
+      <div class="kpi"><div class="v">100,6h</div><div class="l">Temps résolution</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Cockpit global — Service Expert</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Flux</th>
+            <th># Appels / tickets</th>
+            <th>%Δ</th>
+            <th>QoS</th>
+            <th>%Δ</th>
+            <th>QoS redressée</th>
+            <th>DMC / délai</th>
+            <th>%Δ</th>
+            <th>% Qualif</th>
+            <th>%Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>📞 Appels entrants</td>
+            <td>255</td>
+            <td class="dn">-5,6%</td>
+            <td>95,3%</td>
+            <td class="up">+0,1</td>
+            <td>99,6%</td>
+            <td>00:06:20</td>
+            <td class="dn">-30,5%</td>
+            <td>50%</td>
+            <td class="dn">-7,3%</td>
+          </tr>
+          <tr>
+            <td>📤 Appels sortants</td>
+            <td>306</td>
+            <td class="up">+11,3%</td>
+            <td>57,8%</td>
+            <td class="up">+1,3</td>
+            <td>57,8%</td>
+            <td>00:09:25</td>
+            <td class="dn">-16,5%</td>
+            <td>72%</td>
+            <td class="dn">-7,7%</td>
+          </tr>
+          <tr>
+            <td>🎫 Tickets Expert</td>
+            <td>509 créés</td>
+            <td>—</td>
+            <td>589 traités</td>
+            <td>—</td>
+            <td>356 résolus</td>
+            <td>100,6h</td>
+            <td>—</td>
+            <td>216 fermés</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="comment">
+        <strong>Lecture :</strong> Avril combine une bonne maîtrise des entrants, une hausse de l’activité sortante mais encore fragile en qualité,
+        et un support tickets capable d’absorber plus qu’il ne reçoit, avec un vrai sujet sur le délai moyen de résolution.
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Appels entrants — par pays</h2>
+        <table>
+          <thead>
+            <tr><th>Pays</th><th>#</th><th>Traités</th><th>QoS</th><th>DMC</th><th>% Qualif</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>🇫🇷 France</td><td>133</td><td>125</td><td>94,0%</td><td>00:06:02</td><td>76,0%</td></tr>
+            <tr><td>🇮🇹 Italie</td><td>94</td><td>92</td><td>97,9%</td><td>00:06:40</td><td>0,0%</td></tr>
+            <tr><td>🇵🇹 Portugal</td><td>20</td><td>18</td><td>90,0%</td><td>00:07:45</td><td>100%</td></tr>
+            <tr><td>🇪🇸 Espagne / LAT</td><td>8</td><td>8</td><td>100%</td><td>00:09:40</td><td>100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Appels sortants — par pays</h2>
+        <table>
+          <thead>
+            <tr><th>Pays</th><th>#</th><th>Traités</th><th>QoS</th><th>DMC</th><th>% Qualif</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>🇪🇸 Espagne / LAT</td><td>139</td><td>64</td><td>46,0%</td><td>00:08:23</td><td>100%</td></tr>
+            <tr><td>🇫🇷 France</td><td>64</td><td>45</td><td>70,3%</td><td>00:09:42</td><td>88,9%</td></tr>
+            <tr><td>🇮🇹 Italie</td><td>61</td><td>45</td><td>73,8%</td><td>00:06:16</td><td>4,4%</td></tr>
+            <tr><td>🇵🇹 Portugal</td><td>42</td><td>23</td><td>54,8%</td><td>00:17:56</td><td>91,3%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ENTRANTS ========== -->
+  <section id="entrants" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">255</div><div class="l">Appels entrants</div><div class="d dn">-5,6%</div></div>
+      <div class="kpi"><div class="v">95,3%</div><div class="l">QoS</div><div class="d up">+0,1</div></div>
+      <div class="kpi"><div class="v">99,6%</div><div class="l">QoS redressée</div><div class="d up">+1,5</div></div>
+      <div class="kpi"><div class="v">06:20</div><div class="l">DMC</div><div class="d dn">-30,5%</div></div>
+      <div class="kpi"><div class="v">50%</div><div class="l">% Qualif</div><div class="d dn">-7,3%</div></div>
+    </div>
+
+    <div class="success">
+      <strong>✅ Bonne tenue des entrants :</strong> malgré un léger recul de volume, la QoS reste élevée et la DMC baisse fortement.
+      Le principal point de vigilance est la qualification, à seulement 50%.
+    </div>
+
+    <div class="card">
+      <h2>Appels entrants — Synthèse par pays</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Pays</th>
+            <th># Appels</th>
+            <th>%Δ</th>
+            <th>Traités</th>
+            <th>QoS</th>
+            <th>QoS redressée</th>
+            <th>DMC</th>
+            <th>% Qualif</th>
+            <th>Lecture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🇫🇷 France</td>
+            <td>133</td>
+            <td class="dn">-6,3%</td>
+            <td>125</td>
+            <td>94,0%</td>
+            <td>99,2%</td>
+            <td>00:06:02</td>
+            <td>76,0%</td>
+            <td>Premier bassin entrant, bon niveau de qualification</td>
+          </tr>
+          <tr>
+            <td>🇮🇹 Italie</td>
+            <td>94</td>
+            <td class="neutral">0,0%</td>
+            <td>92</td>
+            <td>97,9%</td>
+            <td>100%</td>
+            <td>00:06:40</td>
+            <td>0,0%</td>
+            <td>Très bonne qualité opérationnelle, mais qualification absente / non remontée</td>
+          </tr>
+          <tr>
+            <td>🇵🇹 Portugal</td>
+            <td>20</td>
+            <td class="dn">-35,5%</td>
+            <td>18</td>
+            <td>90,0%</td>
+            <td>100%</td>
+            <td>00:07:45</td>
+            <td>100%</td>
+            <td>Volume en retrait, échanges plus longs</td>
+          </tr>
+          <tr>
+            <td>🇪🇸 Espagne / LAT</td>
+            <td>8</td>
+            <td class="up">+33,3%</td>
+            <td>8</td>
+            <td>100%</td>
+            <td>100%</td>
+            <td>00:09:40</td>
+            <td>100%</td>
+            <td>Volume faible mais traitement complet</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Entrants — KPI par file</h2>
+        <table>
+          <thead>
+            <tr><th>File</th><th>#</th><th>%Δ</th><th>QoS</th><th>DMC</th><th>% Qualif</th><th>Note</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Service Expert ITA — Top</td><td>89</td><td class="up">+6,0%</td><td>97,75%</td><td>00:06:39</td><td>0%</td><td>5,0</td></tr>
+            <tr><td>Service Expert FRA — Center</td><td>65</td><td class="dn">-4,4%</td><td>96,92%</td><td>00:04:47</td><td>73%</td><td>5,0</td></tr>
+            <tr><td>Service Expert FRA — Flop</td><td>50</td><td class="dn">-2,0%</td><td>88,0%</td><td>00:07:20</td><td>70,5%</td><td>4,7</td></tr>
+            <tr><td>Service Expert FRA — Top</td><td>18</td><td class="dn">-10,0%</td><td>100%</td><td>00:07:11</td><td>100%</td><td>5,0</td></tr>
+            <tr><td>Service Expert POR — Top</td><td>18</td><td class="dn">-41,9%</td><td>86,67%</td><td>00:09:08</td><td>100%</td><td>—</td></tr>
+            <tr><td>Service Expert ES/LAT — Top</td><td>7</td><td class="up">+133,3%</td><td>100%</td><td>00:04:04</td><td>100%</td><td>5,0</td></tr>
+            <tr><td>Service Expert ITA — Center</td><td>5</td><td class="neutral">0,0%</td><td>100%</td><td>00:06:47</td><td>100%</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Entrants — KPI par conseiller</h2>
+        <table>
+          <thead>
+            <tr><th>Conseiller</th><th>#</th><th>%Δ</th><th>QoS</th><th>DMC</th><th>% Qualif</th><th>Note</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Best14 Gabriela</td><td>94</td><td class="neutral">0,0%</td><td>97,87%</td><td>00:06:40</td><td>0%</td><td>5,0</td></tr>
+            <tr><td>Best04 Aurora</td><td>73</td><td class="dn">-21,5%</td><td>89,04%</td><td>00:07:39</td><td>98,46%</td><td>5,0</td></tr>
+            <tr><td>Best08 Marina</td><td>65</td><td class="up">+22,6%</td><td>89,23%</td><td>00:04:11</td><td>50%</td><td>4,67</td></tr>
+            <tr><td>Best01 Ana</td><td>20</td><td class="dn">-35,5%</td><td>90,0%</td><td>00:07:45</td><td>100%</td><td>—</td></tr>
+            <tr><td>Best06 Elisa</td><td>8</td><td class="up">+33,3%</td><td>100%</td><td>00:04:10</td><td>100%</td><td>5,0</td></tr>
+            <tr><td>Best Sup</td><td>2</td><td>—</td><td>100%</td><td>00:06:56</td><td>100%</td><td>5,0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid3">
+      <div class="card">
+        <h2>Points positifs</h2>
+        <ul class="discussion-list">
+          <li>QoS entrante élevée à 95,3%.</li>
+          <li>QoS redressée quasi parfaite à 99,6%.</li>
+          <li>DMC en baisse, signe d’échanges plus efficaces.</li>
+          <li>France reste le principal bassin de traitement entrant.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Points d’attention</h2>
+        <div class="alert">
+          <strong>% Qualif à 50% :</strong> la qualité de qualification reste insuffisante pour piloter finement les motifs, pays et segments.
+        </div>
+        <div class="alert">
+          <strong>Italie :</strong> excellent niveau opérationnel, mais qualification à 0% sur le volume principal.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Lecture managériale</h2>
+        <div class="comment">
+          Les entrants sont globalement sous contrôle. L’enjeu n’est pas la capacité de réponse, mais la qualité de la donnée produite après appel.
+          Sans meilleure qualification, les irritants récurrents sont plus difficiles à prioriser.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SORTANTS ========== -->
+  <section id="sortants" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">306</div><div class="l">Appels sortants</div><div class="d up">+11,3%</div></div>
+      <div class="kpi"><div class="v">57,8%</div><div class="l">QoS</div><div class="d up">+1,3</div></div>
+      <div class="kpi"><div class="v">57,8%</div><div class="l">QoS redressée</div><div class="d up">+1,3</div></div>
+      <div class="kpi"><div class="v">09:25</div><div class="l">DMC</div><div class="d dn">-16,5%</div></div>
+      <div class="kpi"><div class="v">72%</div><div class="l">% Qualif</div><div class="d dn">-7,7%</div></div>
+    </div>
+
+    <div class="alert">
+      <strong>⚠ Qualité sortante encore fragile :</strong> le volume progresse, mais la QoS reste basse à 57,8%.
+      Les sortants doivent être mieux cadrés pour éviter les appels longs, dispersés ou sans action claire.
+    </div>
+
+    <div class="card">
+      <h2>Appels sortants — Synthèse par pays</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Pays</th>
+            <th># Appels</th>
+            <th>%Δ</th>
+            <th>Traités</th>
+            <th>QoS</th>
+            <th>DMC</th>
+            <th>% Qualif</th>
+            <th>Lecture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🇪🇸 Espagne / LAT</td>
+            <td>139</td>
+            <td class="up">+24,1%</td>
+            <td>64</td>
+            <td class="dn">46,0%</td>
+            <td>00:08:23</td>
+            <td>100%</td>
+            <td>Premier volume sortant mais qualité faible, forte exposition aux bugs / QS / défiance technique</td>
+          </tr>
+          <tr>
+            <td>🇫🇷 France</td>
+            <td>64</td>
+            <td class="dn">-17,9%</td>
+            <td>45</td>
+            <td>70,3%</td>
+            <td>00:09:42</td>
+            <td>88,9%</td>
+            <td>Coaching et pédagogie tarifaire, besoin de cadrage des appels longs</td>
+          </tr>
+          <tr>
+            <td>🇮🇹 Italie</td>
+            <td>61</td>
+            <td class="up">+52,5%</td>
+            <td>45</td>
+            <td>73,8%</td>
+            <td>00:06:16</td>
+            <td>4,4%</td>
+            <td>Bonne structuration, mais qualification très faible</td>
+          </tr>
+          <tr>
+            <td>🇵🇹 Portugal</td>
+            <td>42</td>
+            <td class="dn">-6,7%</td>
+            <td>23</td>
+            <td>54,8%</td>
+            <td>00:17:56</td>
+            <td>91,3%</td>
+            <td>Très forte valeur commerciale, mais appels très longs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Sortants — KPI par file</h2>
+        <table>
+          <thead>
+            <tr><th>File</th><th>#</th><th>%Δ</th><th>QoS</th><th>DMC</th><th>% Qualif</th><th>Note</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Service Expert ES/LAT — Center</td><td>139</td><td class="up">+24,1%</td><td>46,04%</td><td>00:08:23</td><td>100%</td><td>4,0</td></tr>
+            <tr><td>Service Expert ITA — Center</td><td>60</td><td class="up">+76,5%</td><td>73,33%</td><td>00:06:24</td><td>4,5%</td><td>5,0</td></tr>
+            <tr><td>Service Expert FRA — Top</td><td>58</td><td class="up">forte hausse</td><td>68,97%</td><td>00:09:54</td><td>87,5%</td><td>5,0</td></tr>
+            <tr><td>Service Expert POR — Top</td><td>42</td><td class="dn">-6,7%</td><td>54,76%</td><td>00:17:56</td><td>91,3%</td><td>—</td></tr>
+            <tr><td>Service Expert FRA — Flop</td><td>6</td><td class="dn">-14,3%</td><td>83,33%</td><td>00:07:59</td><td>100%</td><td>4,0</td></tr>
+            <tr><td>Service Expert ITA — Top</td><td>1</td><td class="dn">-80,0%</td><td>100%</td><td>00:00:10</td><td>0%</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Sortants — KPI par conseiller</h2>
+        <table>
+          <thead>
+            <tr><th>Conseiller</th><th>#</th><th>%Δ</th><th>QoS</th><th>DMC</th><th>% Qualif</th><th>Note</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Best06 Elisa</td><td>139</td><td class="up">+24,1%</td><td>46,04%</td><td>00:08:23</td><td>100%</td><td>4,0</td></tr>
+            <tr><td>Best14 Gabriela</td><td>61</td><td class="up">+52,5%</td><td>73,77%</td><td>00:06:16</td><td>4,44%</td><td>5,0</td></tr>
+            <tr><td>Best04 Aurora</td><td>58</td><td class="dn">-18,3%</td><td>68,97%</td><td>00:09:54</td><td>87,5%</td><td>5,0</td></tr>
+            <tr><td>Best01 Ana</td><td>42</td><td class="dn">-6,7%</td><td>54,76%</td><td>00:17:56</td><td>91,3%</td><td>—</td></tr>
+            <tr><td>Best Sup</td><td>5</td><td class="dn">-28,6%</td><td>80,0%</td><td>00:09:42</td><td>100%</td><td>3,5</td></tr>
+            <tr><td>Best08 Marina</td><td>1</td><td>—</td><td>100%</td><td>00:01:05</td><td>—</td><td>5,0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Qualification / Segmentation — Lecture avril</h2>
+      <div class="grid3">
+        <div class="card">
+          <h3><span class="pill">Top</span> Ce qui marche</h3>
+          <ul class="discussion-list">
+            <li>Coaching commercial individualisé.</li>
+            <li>Objectifs de CA et paliers de commission.</li>
+            <li>Promotions ciblées et datées.</li>
+            <li>Lives, vidéos, bannières, contenus Astrocenter.</li>
+            <li>Repositionnement tarifaire progressif.</li>
+          </ul>
+          <div class="alert">
+            <strong>Ce qui bloque :</strong> dépendance aux promos, bugs qui cassent la performance, appels parfois trop relationnels.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="pill">Center</span> Ce qui marche</h3>
+          <ul class="discussion-list">
+            <li>Support actif : technique, comptabilité, QS, litiges.</li>
+            <li>Bonne écoute des experts inquiets.</li>
+            <li>Réassurance quand le conseiller teste en direct.</li>
+            <li>Possibilité de transformer le support en relance commerciale.</li>
+          </ul>
+          <div class="alert">
+            <strong>Ce qui bloque :</strong> trop de bugs récurrents, compréhension financière fragile, experts émotionnellement chargés.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="pill">Flop</span> Ce qui marche</h3>
+          <ul class="discussion-list">
+            <li>Explication des suspensions et soldes négatifs.</li>
+            <li>Accompagnement fermeture / pause.</li>
+            <li>Gestion calme malgré frustration.</li>
+          </ul>
+          <div class="alert">
+            <strong>Ce qui bloque :</strong> rupture économique, faible rentabilité, risque départ, manque de grille de décision.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TICKETS ========== -->
+  <section id="tickets" class="tab">
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">509</div><div class="l">Tickets créés</div></div>
+      <div class="kpi"><div class="v">589</div><div class="l">Tickets traités</div></div>
+      <div class="kpi"><div class="v">356</div><div class="l">Tickets résolus</div></div>
+      <div class="kpi"><div class="v">216</div><div class="l">Tickets fermés</div></div>
+      <div class="kpi"><div class="v">100,6h</div><div class="l">Temps moyen résolution</div></div>
+    </div>
+
+    <div class="success">
+      <strong>✅ Absorption positive :</strong> 589 tickets traités pour 509 créés, donc le flux est absorbé sur le mois.
+    </div>
+
+    <div class="alert">
+      <strong>⚠ Délai critique :</strong> le temps moyen de résolution atteint 100,6h. Le sujet prioritaire n’est pas uniquement la capacité de traitement,
+      mais la rapidité de résolution et le retour visible à l’expert.
+    </div>
+
+    <div class="grid3">
+      <div class="card">
+        <h2>Vue globale</h2>
+        <table>
+          <thead><tr><th>Indicateur</th><th>Valeur</th></tr></thead>
+          <tbody>
+            <tr><td>Tickets créés</td><td>509</td></tr>
+            <tr><td>Tickets traités</td><td>589</td></tr>
+            <tr><td>Tickets résolus</td><td>356</td></tr>
+            <tr><td>Tickets fermés</td><td>216</td></tr>
+            <tr><td>Temps moyen résolution</td><td>100,6h</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Motifs dominants</h2>
+        <ul class="discussion-list">
+          <li>Compte expert.</li>
+          <li>Coaching / accompagnement commercial.</li>
+          <li>Technique : appels coupés, chat, affichage, notifications.</li>
+          <li>Comptabilité / virements / frais.</li>
+          <li>Options, litiges clients, remboursements.</li>
+        </ul>
+        <div class="comment">
+          Les motifs confirment les signaux appels : support technique, modèle économique et coaching restent les trois grands blocs de charge.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Répartition pays / groupes</h2>
+        <ul class="discussion-list">
+          <li>France : premier bassin de tickets Expert.</li>
+          <li>Italie : volume important, lié au support et à l’onboarding.</li>
+          <li>Portugal : forte animation commerciale, support relation client.</li>
+          <li>ES/LATAM : bugs, QS, modèle économique et recontacts.</li>
+          <li>Turquie / UK-USA : volumes faibles.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Lecture managériale tickets</h2>
+      <table class="simple-table">
+        <thead>
+          <tr>
+            <th>Sujet</th>
+            <th>Constat avril</th>
+            <th>Risque</th>
+            <th>Action recommandée</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Délai de résolution</td>
+            <td>100,6h en moyenne</td>
+            <td>Perte de confiance et recontacts</td>
+            <td>Plan SLA : prioriser tickets techniques et financiers</td>
+          </tr>
+          <tr>
+            <td>Technique</td>
+            <td>Bugs récurrents téléphone / chat / affichage</td>
+            <td>Impact CA, QS, avis et frustration</td>
+            <td>Process preuve → ticket → SLA → confirmation</td>
+          </tr>
+          <tr>
+            <td>Compte expert</td>
+            <td>Motif dominant visible dans les répartitions</td>
+            <td>Charge support récurrente</td>
+            <td>Base de connaissance + réponses standardisées</td>
+          </tr>
+          <tr>
+            <td>Coaching</td>
+            <td>Demande forte d’accompagnement business</td>
+            <td>Variabilité selon conseiller</td>
+            <td>Playbook de coaching par segment Top / Center / Flop</td>
+          </tr>
+          <tr>
+            <td>Comptabilité / frais</td>
+            <td>Incompréhension du modèle économique</td>
+            <td>Appels longs, churn, défiance</td>
+            <td>Guide financier Expert 1 page + exemples chiffrés</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== FOCUS PAYS ========== -->
+  <section id="focus" class="tab">
+    <div class="card">
+      <h2>🌍 Focus par pays — Avril 2026</h2>
+      <div class="comment">
+        <strong>Lecture :</strong> les pays n’ont pas les mêmes enjeux. Portugal = animation commerciale avancée,
+        Espagne = défiance technique / QS, Italie = onboarding et support structuré, France = pédagogie tarifaire et coaching relationnel.
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>🇫🇷 France</h2>
+        <h3>Points saillants</h3>
+        <ul class="discussion-list">
+          <li>France Top portée fortement par Aurora : coaching, bannières, lives, messages programmés, Wengo Light.</li>
+          <li>France Center orientée réactivation, appels manqués, documents, litiges et virements.</li>
+          <li>France Flop centré sur comptes suspendus, soldes négatifs et incompréhension des frais de 200€.</li>
+        </ul>
+
+        <div class="success">
+          <strong>✅ Succès :</strong> forte relation de confiance, bonne capacité à remotiver et à proposer des leviers commerciaux.
+        </div>
+
+        <div class="alert">
+          <strong>⚠ Vigilance :</strong> appels parfois longs et personnels, dépendance à Aurora, besoin d’une grille Flop pause / reprise / fermeture.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🇵🇹 Portugal</h2>
+        <h3>Points saillants</h3>
+        <ul class="discussion-list">
+          <li>Marché le plus dynamique commercialement.</li>
+          <li>Très fort usage des objectifs CA, paliers, hausses tarifaires, promos, contenus, lives, Trustpilot.</li>
+          <li>Portugal Top concentré sur Stéphanie D et Ana.</li>
+          <li>Center / Flop peu visibles en sortant exploitable.</li>
+        </ul>
+
+        <div class="success">
+          <strong>✅ Succès :</strong> modèle de coaching le plus abouti, à transformer en playbook.
+        </div>
+
+        <div class="alert">
+          <strong>⚠ Vigilance :</strong> DMC sortante très élevée à 17:56, dépendance à Stéphanie, risque de relationnel trop familier.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>🇪🇸 Espagne / LATAM</h2>
+        <h3>Points saillants</h3>
+        <ul class="discussion-list">
+          <li>Premier volume sortant : 139 appels.</li>
+          <li>QoS faible à 46%, malgré une qualification à 100%.</li>
+          <li>Sujets dominants : téléphone, chat, QS, visibilité, frais, commissions, Wengo Latino.</li>
+          <li>Experts souvent inquiets, fragilisés ou défiants face aux bugs.</li>
+        </ul>
+
+        <div class="success">
+          <strong>✅ Succès :</strong> forte pédagogie d’Elisa, capacité à conseiller sur QS, promotions et fidélisation.
+        </div>
+
+        <div class="alert">
+          <strong>⚠ Vigilance :</strong> l’Espagne est le pays le plus exposé à la défiance tech + business. Il faut reconnaître les bugs avant de parler performance.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🇮🇹 Italie</h2>
+        <h3>Points saillants</h3>
+        <ul class="discussion-list">
+          <li>Entrants solides : 94 appels, QoS 97,9%.</li>
+          <li>Sortants en forte hausse : 61 appels, QoS 73,8%.</li>
+          <li>Italie Top : onboarding structuré, pédagogie forte, accompagnement nouveaux experts.</li>
+          <li>Italie Center : support technique, IBAN/BIC, virements, frais, litiges clients.</li>
+        </ul>
+
+        <div class="success">
+          <strong>✅ Succès :</strong> pays le plus structuré sur l’onboarding et la pédagogie.
+        </div>
+
+        <div class="alert">
+          <strong>⚠ Vigilance :</strong> qualification faible sur les appels sortants et entrants ITA ; support encore artisanal ; besoin de process écrits.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🇹🇷 Turquie</h2>
+      <div class="comment">
+        Aucun appel exploitable ressorti dans l’analyse sortante d’avril sur Top / Center / Flop.
+        Si le marché est actif opérationnellement, vérifier si les appels passent par d’autres files ou d’autres outils.
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OCCUPATION ========== -->
+  <section id="occupation" class="tab">
+    <div class="card">
+      <h2>👥 Occupation / charge par conseiller — Avril 2026</h2>
+      <div class="note">
+        Indicateur partiel : basé sur volumes appels entrants/sortants et lecture des volumes tickets visibles.
+        Ne couvre pas toutes les missions hors appels/tickets : lives, bannières, BO, rédaction, client, réunions, etc.
+      </div>
+
+      <table class="simple-table">
+        <thead>
+          <tr>
+            <th>Conseiller</th>
+            <th>Pays / rôle dominant</th>
+            <th>Entrants</th>
+            <th>Sortants</th>
+            <th>Charge visible</th>
+            <th>Lecture managériale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Best06 Elisa</td>
+            <td>ES/LAT — Center</td>
+            <td>8</td>
+            <td>139</td>
+            <td>Très forte charge sortante</td>
+            <td>Premier volume sortant ; forte exposition aux cas techniques, QS et experts fragilisés. Besoin de cadrage pour éviter dispersion.</td>
+          </tr>
+          <tr>
+            <td>Best14 Gabriela</td>
+            <td>Italie — Center / support</td>
+            <td>94</td>
+            <td>61</td>
+            <td>Charge élevée et équilibrée appels</td>
+            <td>Bonne efficacité opérationnelle, mais qualification trop faible. Besoin de standardiser technique / litiges / fiscalité.</td>
+          </tr>
+          <tr>
+            <td>Best04 Aurora</td>
+            <td>France — Top / coaching</td>
+            <td>73</td>
+            <td>58</td>
+            <td>Charge relationnelle forte</td>
+            <td>Très bonne relation expert et coaching, mais risque d’appels longs et de dépendance conseiller.</td>
+          </tr>
+          <tr>
+            <td>Best01 Ana</td>
+            <td>Portugal — support / relation client</td>
+            <td>20</td>
+            <td>42</td>
+            <td>Charge sortante qualitative</td>
+            <td>DMC sortante très élevée ; forte valeur support mais besoin de timeboxing et règles clients abusifs.</td>
+          </tr>
+          <tr>
+            <td>Best08 Marina</td>
+            <td>France — Center</td>
+            <td>65</td>
+            <td>1</td>
+            <td>Charge entrante</td>
+            <td>Flux surtout entrant/support. DMC entrante courte mais attention à la qualification partielle.</td>
+          </tr>
+          <tr>
+            <td>Best Sup</td>
+            <td>Support / renfort</td>
+            <td>2</td>
+            <td>5</td>
+            <td>Faible volume appels</td>
+            <td>Rôle probablement plus fort sur tickets ou support transverse que sur appels.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid3">
+      <div class="card">
+        <h2>Points positifs</h2>
+        <ul class="discussion-list">
+          <li>Elisa absorbe un volume sortant très important.</li>
+          <li>Gabriela maintient une bonne QoS avec une charge mixte entrants/sortants.</li>
+          <li>Aurora reste très forte sur le coaching relationnel France.</li>
+          <li>Ana apporte un support complémentaire important sur le Portugal.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Alertes charge</h2>
+        <div class="alert">
+          <strong>Elisa :</strong> volume élevé + sujets lourds ES/LAT → risque de dispersion et fatigue opérationnelle.
+        </div>
+        <div class="alert">
+          <strong>Ana / Portugal :</strong> DMC sortante très élevée → cadrage nécessaire.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Enjeu organisationnel</h2>
+        <div class="comment">
+          Les performances dépendent fortement de quelques conseillers clés. Il faut transformer les meilleures pratiques individuelles
+          en playbooks communs pour réduire le risque de dépendance.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DISCUSSION ========== -->
+  <section id="discussion" class="tab">
+    <div class="card">
+      <span class="discussion-kicker">Discussion</span>
+      <h2>💬 Guide de discussion Copil — Service Expert — Avril 2026</h2>
+      <div class="comment">
+        Cette page sert de support de discussion pour transformer les constats d’avril en décisions opérationnelles pour mai.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>1. Questions clés à traiter en COPIL</h2>
+      <div class="discussion-grid">
+        <div class="card">
+          <h3>Performance appels</h3>
+          <ul class="discussion-list">
+            <li>Pourquoi la QoS sortante reste-t-elle à 57,8% malgré la hausse du volume ?</li>
+            <li>Quels appels sortants sont réellement à valeur business vs support / tentative / relationnel ?</li>
+            <li>Comment systématiser la fin d’appel : action + responsable + date + KPI ?</li>
+            <li>Quel seuil de DMC cible par type d’appel ?</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Support & tickets</h3>
+          <ul class="discussion-list">
+            <li>Pourquoi le délai moyen tickets est-il à 100,6h ?</li>
+            <li>Quels motifs doivent être priorisés : tech, paiement, compte expert ?</li>
+            <li>Comment éviter les recontacts liés à l’absence de retour visible ?</li>
+            <li>Quels tickets peuvent être évités par guides / templates / FAQ ?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="discussion-grid">
+        <div class="card">
+          <h3>Business Expert</h3>
+          <ul class="discussion-list">
+            <li>Comment rendre les frais et seuils compréhensibles en 1 minute ?</li>
+            <li>Comment réduire la dépendance aux promotions ?</li>
+            <li>Quels leviers Portugal doivent être répliqués ailleurs ?</li>
+            <li>Comment distinguer expert récupérable / expert à mettre en pause / fermeture propre ?</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Qualité & conformité</h3>
+          <ul class="discussion-list">
+            <li>Quel cadre pour clients abusifs, remboursements, multi-comptes et avis négatifs ?</li>
+            <li>Comment éviter les appels trop personnels ou trop familiers ?</li>
+            <li>Comment mieux tracer les escalades N2 ?</li>
+            <li>Comment contrôler la qualification, notamment Italie ?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. Bilan des actions précédentes</h2>
+      <table class="simple-table">
+        <thead>
+          <tr>
+            <th>Action précédente</th>
+            <th>Statut avril</th>
+            <th>Résultat observé</th>
+            <th>Suite proposée</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Closing & timeboxing</td>
+            <td class="dn">À renforcer</td>
+            <td>DMC sortante baisse vs mars mais reste très haute sur Portugal ; appels encore dispersés.</td>
+            <td>Checklist fin d’appel obligatoire.</td>
+          </tr>
+          <tr>
+            <td>Coaching entrepreneur / marketplace</td>
+            <td class="neutral">Partiel</td>
+            <td>Portugal très avancé ; France / Espagne / Italie encore variables.</td>
+            <td>Créer un playbook commun basé sur Portugal.</td>
+          </tr>
+          <tr>
+            <td>Procédure tech / N2</td>
+            <td class="dn">Non stabilisée</td>
+            <td>Les bugs restent un irritant majeur et génèrent recontacts et défiance.</td>
+            <td>Process bug standardisé avec preuve et retour expert.</td>
+          </tr>
+          <tr>
+            <td>Qualification</td>
+            <td class="dn">Insuffisante</td>
+            <td>Entrants à 50% de qualif ; Italie à 0% / très faible sur plusieurs blocs.</td>
+            <td>Contrôle qualité qualification hebdomadaire.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>3. Actions proposées pour mai 2026</h2>
+      <table class="simple-table">
+        <thead>
+          <tr>
+            <th>Prio</th>
+            <th>Action</th>
+            <th>Pourquoi</th>
+            <th>Responsable</th>
+            <th>KPI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🔴 URGENT</td>
+            <td>Process bugs techniques</td>
+            <td>Les bugs détruisent confiance, QS et CA.</td>
+            <td>Wengo + BestCall</td>
+            <td>↓ recontacts tech, ↓ tickets bug, ↑ QoS</td>
+          </tr>
+          <tr>
+            <td>🔴 URGENT</td>
+            <td>Plan réduction délai tickets</td>
+            <td>100,6h de résolution moyenne est trop élevé.</td>
+            <td>BestCall</td>
+            <td>Délai moyen &lt; 72h</td>
+          </tr>
+          <tr>
+            <td>🟡 IMPORTANT</td>
+            <td>Guide financier Expert</td>
+            <td>Frais, seuils et commissions génèrent frustration et appels longs.</td>
+            <td>Wengo</td>
+            <td>↓ appels sur frais, ↓ churn Flop</td>
+          </tr>
+          <tr>
+            <td>🟡 IMPORTANT</td>
+            <td>Checklist fin d’appel</td>
+            <td>Trop d’appels utiles mais non transformés en plan d’action.</td>
+            <td>BestCall</td>
+            <td>% appels avec action + date</td>
+          </tr>
+          <tr>
+            <td>🟡 IMPORTANT</td>
+            <td>Matrice clients abusifs</td>
+            <td>Remboursements, avis, multi-comptes et hors plateforme sont gérés au cas par cas.</td>
+            <td>Wengo</td>
+            <td>↓ escalades floues, ↑ cohérence traitement</td>
+          </tr>
+          <tr>
+            <td>🟢 SUIVI</td>
+            <td>Playbook Portugal</td>
+            <td>Portugal montre les meilleures pratiques de coaching commercial.</td>
+            <td>Wengo + BestCall</td>
+            <td>Adoption FR / ES / IT</td>
+          </tr>
+          <tr>
+            <td>🟢 SUIVI</td>
+            <td>Standardiser onboarding Italie</td>
+            <td>Onboarding qualitatif mais chronophage.</td>
+            <td>Wengo + Italie</td>
+            <td>↓ durée onboarding, ↑ homogénéité</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>4. Format de séance proposé</h2>
+      <table class="simple-table">
+        <thead>
+          <tr>
+            <th>Durée</th>
+            <th>Bloc</th>
+            <th>Contenu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>5 min</td><td>Intro</td><td>Contexte avril et rappel des objectifs Service Expert</td></tr>
+          <tr><td>10 min</td><td>Vue globale</td><td>Entrants, sortants, tickets, signaux majeurs</td></tr>
+          <tr><td>15 min</td><td>Sortants</td><td>QoS, DMC, segmentation Top / Center / Flop</td></tr>
+          <tr><td>10 min</td><td>Tickets</td><td>Délai 100,6h, motifs, plan SLA</td></tr>
+          <tr><td>20 min</td><td>Focus pays</td><td>Portugal, Espagne, Italie, France</td></tr>
+          <tr><td>10 min</td><td>Occupation</td><td>Charge conseillers et risques de dépendance</td></tr>
+          <tr><td>15 min</td><td>Actions mai</td><td>Validation des priorités, responsables, échéances</td></tr>
+          <tr><td>5 min</td><td>Wrap-up</td><td>Décisions, prochaines étapes, livrables</td></tr>
+        </tbody>
+      </table>
+
+      <div class="success">
+        <strong>Durée estimée :</strong> environ 90 minutes.
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = "dashboard-service-expert-2026-04:tab";
+      const buttons = Array.from(document.querySelectorAll("nav button[data-t]"));
+      const tabs = Array.from(document.querySelectorAll(".tab"));
+
+      function activateTab(tabId) {
+        buttons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.t === tabId);
+        });
+
+        tabs.forEach((tab) => {
+          tab.classList.toggle("active", tab.id === tabId);
+        });
+
+        localStorage.setItem(STORAGE_KEY, tabId);
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          activateTab(button.dataset.t);
+        });
+      });
+
+      const savedTab = localStorage.getItem(STORAGE_KEY);
+      const hasSavedTab = savedTab && tabs.some((tab) => tab.id === savedTab);
+
+      activateTab(hasSavedTab ? savedTab : "copil");
+    })();
+  </script>
+</body>
+</html>

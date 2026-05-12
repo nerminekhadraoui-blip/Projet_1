@@ -14,7 +14,9 @@
       "label": "Service Expert",
       "description": "Suivi opérationnel des experts et de leur activité",
       "icon": "🎓",
-      "dashboards": []
+      "dashboards": [
+        { "id": "2026-04-ex",    "label": "Avril 2026",            "file": "./dashboards/expert/2026-04-ex.html" }
+      ]
     }
   }
 }

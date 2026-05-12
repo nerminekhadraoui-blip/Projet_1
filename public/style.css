@@ -815,6 +815,23 @@ button {
     gap: 22px;
   }
   
+  /* ====== Espacement entre les cartes de service ====== */
+.landing-services {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;              /* ← augmente cette valeur pour plus d'espace (ex: 32px, 40px) */
+}
+
+/* ====== Titre principal de la landing ====== */
+.landing-header h1 {
+  color: #cb9285;
+}
+
+/* ====== Titres des cartes (Service Client / Service Expert) ====== */
+.service-card h2 {
+  color: #cb9285;
+}
+
   .service-card {
     position: relative;
     display: flex;
